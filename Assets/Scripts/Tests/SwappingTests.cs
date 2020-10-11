@@ -53,7 +53,7 @@ namespace Tests.Unit
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemDown);
             Swapper swapper = CreateSwapper(itemSearcher);
 
-            swapper.SwapDawn(selectedItem);
+            swapper.SwapDown(selectedItem);
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
@@ -69,7 +69,7 @@ namespace Tests.Unit
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemLeft);
             Swapper swapper = CreateSwapper(itemSearcher);
 
-            swapper.SwapDawn(selectedItem);
+            swapper.SwapLeft(selectedItem);
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);

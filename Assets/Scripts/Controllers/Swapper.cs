@@ -31,12 +31,20 @@ namespace Math3Game.Controller
             rightItem.Position = selectedItemCurrentPosition;
         }
 
-        public void SwapDawn(Item selectedItem)
+        public void SwapDown(Item selectedItem)
         {
             Item downItem = itemSearcher.GetItemUnder(selectedItem);
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
             selectedItem.Position = downItem.Position;
             downItem.Position = selectedItemCurrentPosition;
+        }
+
+        public void SwapLeft(Item selectedItem)
+        {
+            Item leftItem = itemSearcher.GetItemLeft(selectedItem);
+            Vector2 selectedItemCurrentPosition = selectedItem.Position;
+            selectedItem.Position = leftItem.Position;
+            leftItem.Position = selectedItemCurrentPosition;
         }
     }
 }

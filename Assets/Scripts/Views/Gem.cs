@@ -10,6 +10,7 @@ namespace Math3Game.View
     {
         [SerializeField]
         private Rigidbody2D gemRigidbody;
+        RigidbodyConstraints2D currentMovementConstraint;
 
         public Vector2 Position 
         { 
