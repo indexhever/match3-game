@@ -9,42 +9,67 @@ namespace Math3Game.Controller
     public class Swapper
     {
         private ItemSearcher itemSearcher;
+        private Item selectedItem;
+        private Item itemSwapped;
+        private Vector2 itemInitialPosition;
+        private Vector2 itemSwappedInitialPosition;
 
         public Swapper(ItemSearcher itemSearcher)
         {
             this.itemSearcher = itemSearcher;
         }
 
-        public void SwapUp(Item selectedItem)
+        public void Initialize(Item selectedItem)
         {
-            Item aboveItem = itemSearcher.GetItemAbove(selectedItem);
-            Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = aboveItem.Position;
-            aboveItem.Position = selectedItemCurrentPosition;
+            this.selectedItem = selectedItem;
+            this.itemInitialPosition = selectedItem.Position;
         }
 
-        public void SwapRight(Item selectedItem)
+        public void SwapUp()
         {
-            Item rightItem = itemSearcher.GetItemRight(selectedItem);
+            itemSwapped = itemSearcher.GetItemAbove(selectedItem);
+            itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = rightItem.Position;
-            rightItem.Position = selectedItemCurrentPosition;
+            selectedItem.Position = itemSwapped.Position;
+            itemSwapped.Position = selectedItemCurrentPosition;
         }
 
-        public void SwapDown(Item selectedItem)
+        public void SwapRight()
         {
-            Item downItem = itemSearcher.GetItemUnder(selectedItem);
+            itemSwapped = itemSearcher.GetItemRight(selectedItem);
+            itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = downItem.Position;
-            downItem.Position = selectedItemCurrentPosition;
+            selectedItem.Position = itemSwapped.Position;
+            itemSwapped.Position = selectedItemCurrentPosition;
         }
 
-        public void SwapLeft(Item selectedItem)
+        public void SwapDown()
         {
-            Item leftItem = itemSearcher.GetItemLeft(selectedItem);
+            itemSwapped = itemSearcher.GetItemUnder(selectedItem);
+            itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = leftItem.Position;
-            leftItem.Position = selectedItemCurrentPosition;
+            selectedItem.Position = itemSwapped.Position;
+            itemSwapped.Position = selectedItemCurrentPosition;
+        }
+
+        public void SwapLeft()
+        {
+            itemSwapped = itemSearcher.GetItemLeft(selectedItem);
+            itemSwappedInitialPosition = itemSwapped.Position;
+            Vector2 selectedItemCurrentPosition = selectedItem.Position;
+            selectedItem.Position = itemSwapped.Position;
+            itemSwapped.Position = selectedItemCurrentPosition;
+        }
+
+        public void Reset()
+        {
+            if (selectedItem == null || itemSwapped == null)
+                return;
+            if (selectedItem.Position == itemInitialPosition && itemSwapped.Position == itemSwappedInitialPosition)
+                return;
+
+            selectedItem.Position = itemInitialPosition;
+            itemSwapped.Position = itemSwappedInitialPosition;
         }
     }
 }

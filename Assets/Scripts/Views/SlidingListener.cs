@@ -20,13 +20,18 @@ namespace Math3Game.View
             this.swapper = swapper;
         }
 
+        private void Start()
+        {
+            swapper.Initialize(currentItem);
+        }
+
         public void OnSlidingUp()
         {
             if (isSwapping)
                 return;
 
             isSwapping = true;
-            swapper.SwapUp(currentItem);
+            swapper.SwapUp();
         }
 
         public void OnSlidingDown()
@@ -35,7 +40,7 @@ namespace Math3Game.View
                 return;
 
             isSwapping = true;
-            swapper.SwapDown(currentItem);
+            swapper.SwapDown();
         }
 
         public void OnSlidingRight()
@@ -44,7 +49,7 @@ namespace Math3Game.View
                 return;
 
             isSwapping = true;
-            swapper.SwapRight(currentItem);
+            swapper.SwapRight();
         }
 
         public void OnSlidingLeft()
@@ -53,12 +58,13 @@ namespace Math3Game.View
                 return;
 
             isSwapping = true;
-            swapper.SwapLeft(currentItem);
+            swapper.SwapLeft();
         }
 
         public void OnInitialPosition()
         {
             isSwapping = false;
+            swapper.Reset();
         }
 
         public void OnEnd()

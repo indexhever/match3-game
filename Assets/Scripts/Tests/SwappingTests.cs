@@ -20,8 +20,9 @@ namespace Tests.Unit
             Item selectedItem = CreateItem(selectedItemInitialPosition);
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemAbove);
             Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
 
-            swapper.SwapUp(selectedItem);
+            swapper.SwapUp();
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
@@ -36,8 +37,9 @@ namespace Tests.Unit
             Item selectedItem = CreateItem(selectedItemInitialPosition);
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemOnTheRight);
             Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
 
-            swapper.SwapRight(selectedItem);
+            swapper.SwapRight();
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
@@ -52,8 +54,9 @@ namespace Tests.Unit
             Item selectedItem = CreateItem(selectedItemInitialPosition);
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemDown);
             Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
 
-            swapper.SwapDown(selectedItem);
+            swapper.SwapDown();
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
@@ -68,11 +71,33 @@ namespace Tests.Unit
             Item selectedItem = CreateItem(selectedItemInitialPosition);
             ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemLeft);
             Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
 
-            swapper.SwapLeft(selectedItem);
+            swapper.SwapLeft();
             Vector2 selectedItemPosition = selectedItem.Position;
 
             Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
+        }
+
+        [Test]
+        public void ResetingWillReturnSwappedItemsToInitialPlaces()
+        {
+            Vector2 initialItemAbovePosition = Vector2.up;
+            Vector2 selectedItemInitialPosition = Vector2.zero;
+            Vector2 expectedSelectedItemPosition = selectedItemInitialPosition;            
+            Item itemAbove = CreateItem(initialItemAbovePosition);
+            Item selectedItem = CreateItem(selectedItemInitialPosition);
+            ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemAbove);
+            Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
+
+            swapper.SwapUp();
+            swapper.Reset();
+            Vector2 selectedItemPosition = selectedItem.Position;
+            Vector2 itemAbovePosition = itemAbove.Position;
+
+            Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
+            Assert.AreEqual(initialItemAbovePosition, itemAbovePosition);
         }
 
         // when releasing swapp if two itens can stay at their new places, there is a match and board is updated
