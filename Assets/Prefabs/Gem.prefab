@@ -99,6 +99,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gemRigidbody: {fileID: 605581297360085473}
+  spriteRenderer: {fileID: 2676155394702551714}
 --- !u!50 &605581297360085473
 Rigidbody2D:
   serializedVersion: 4

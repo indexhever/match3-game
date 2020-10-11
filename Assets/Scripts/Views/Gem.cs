@@ -10,7 +10,8 @@ namespace Math3Game.View
     {
         [SerializeField]
         private Rigidbody2D gemRigidbody;
-        RigidbodyConstraints2D currentMovementConstraint;
+        [SerializeField]
+        private SpriteRenderer spriteRenderer;
 
         public Vector2 Position 
         { 
@@ -29,12 +30,13 @@ namespace Math3Game.View
         public int Column { get; set; }
 
         [Inject]
-        public void Construct(Vector2 initialPosition)
+        public void Construct(Vector2 initialPosition, Sprite gemImage)
         {
             transform.position = initialPosition;
+            spriteRenderer.sprite = gemImage;
         }
 
-        public class Factory : PlaceholderFactory<Vector2, Gem>
+        public class Factory : PlaceholderFactory<Vector2, Sprite, Gem>
         {
 
         }

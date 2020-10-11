@@ -373,6 +373,14 @@ MonoBehaviour:
   offsetBetweenItens: -0.1
   itemPrefab: {fileID: 2676155394702551713, guid: 9a9a1da713e93f34fb99885cbbb56937,
     type: 3}
+  gemImages:
+  - {fileID: 21300000, guid: c5479f609d221c049ac70e0c36dbf281, type: 3}
+  - {fileID: 21300000, guid: 6807c92debc44204cab781d74d2f6a01, type: 3}
+  - {fileID: 21300000, guid: cf8e1a5020ddea4418e83555aa3361a2, type: 3}
+  - {fileID: 21300000, guid: dd8542ba2d0c9cb46bc06759857d43d4, type: 3}
+  - {fileID: 21300000, guid: ca0bb4b1ac0e3e84d910bd101ce53e89, type: 3}
+  - {fileID: 21300000, guid: ebb2a26f6076ca3439e3452e2a4594cd, type: 3}
+  - {fileID: 21300000, guid: 7655ed8f3d58516489d1de9d74eed9df, type: 3}
 --- !u!4 &1107076087
 Transform:
   m_ObjectHideFlags: 0
