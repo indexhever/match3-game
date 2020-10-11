@@ -6,6 +6,8 @@ namespace GridFramework
 {
     public interface Item
     {
-
+        Vector2 Position { get; set; }
+        int Row { get; set; }
+        int Column { get; set; }
     }
 }

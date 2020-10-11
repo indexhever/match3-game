@@ -12,5 +12,20 @@ namespace Tests
         {
             this.newItemPosition = newItemPosition;
         }
+
+        public Vector2 Position 
+        {
+            get
+            {
+                return newItemPosition;
+            }
+            set
+            {
+                newItemPosition = value;
+            }
+        }
+
+        public int Row { get; set; }
+        public int Column { get; set; }
     }
 }

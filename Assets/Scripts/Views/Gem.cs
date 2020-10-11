@@ -8,6 +8,25 @@ namespace Math3Game.View
 {
     public class Gem : MonoBehaviour, Item
     {
+        [SerializeField]
+        private Rigidbody2D gemRigidbody;
+
+        public Vector2 Position 
+        { 
+            get
+            {
+                return transform.localPosition;
+            }
+            set
+            {
+                gemRigidbody.MovePosition(value);
+            }
+        }
+
+        public int Row { get; set; }
+
+        public int Column { get; set; }
+
         [Inject]
         public void Construct(Vector2 initialPosition)
         {

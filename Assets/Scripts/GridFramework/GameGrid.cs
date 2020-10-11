@@ -37,6 +37,8 @@ namespace GridFramework
                 {
                     newItemPosition = CreateItemPositionByRowAndColum(row, column);
                     newItem = itemFactory.Create(newItemPosition);
+                    newItem.Row = row;
+                    newItem.Column = column;
                     items[GetPositionFromRowColum(row, column)] = newItem;
                 }                
             }

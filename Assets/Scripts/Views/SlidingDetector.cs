@@ -7,7 +7,7 @@ using UnityEngine.EventSystems;
 
 namespace Math3Game.View
 {
-    public class SlidingDetector : MonoBehaviour, IBeginDragHandler, IDragHandler
+    public class SlidingDetector : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
     {
         private const float MAX_MOVEMENT_THRESHOLD = 0.8f;
         private const float MIN_MOVEMENT_THRESHOLD = 0.1f;
@@ -28,6 +28,8 @@ namespace Math3Game.View
         private UnityEvent OnSlidingLeft;
         [SerializeField]
         private UnityEvent OnInitialPosition;
+        [SerializeField]
+        private UnityEvent OnEndSliding;
 
         private void Start()
         {
@@ -44,6 +46,11 @@ namespace Math3Game.View
             currentPosition = cam.ScreenToWorldPoint(eventData.position);
             movementDirectionVector = currentPosition - startingPosition;
             CheckDirectionOfSwapping();
+        }
+
+        public void OnEndDrag(PointerEventData eventData)
+        {
+            OnEndSliding?.Invoke();
         }
 
         private void CheckDirectionOfSwapping()
