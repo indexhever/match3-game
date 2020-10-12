@@ -9,7 +9,7 @@ using Zenject;
 
 namespace Math3Game.View
 {
-    public class MatchScanner : MonoBehaviour
+    public class MatchScanner : MonoBehaviour, MatchScannerTrigger
     {
         private GameGrid grid;
         private SwappingInputSwitch swappingInputSwitch;

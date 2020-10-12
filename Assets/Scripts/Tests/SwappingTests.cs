@@ -153,7 +153,7 @@ namespace Tests.Unit
 
         private Swapper CreateSwapper(ItemSearcher itemSearcher)
         {
-            return new Swapper(itemSearcher);
+            return new Swapper(itemSearcher, new MockMatchScannerTrigger());
         }
 
         private ItemSearcher CreateRightMockItemSearcher(Func<Item> getItemRight, string neighborType = "")

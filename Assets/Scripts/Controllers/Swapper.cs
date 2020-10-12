@@ -1,4 +1,5 @@
 ﻿using GridFramework;
+using Math3Game.View;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,14 +10,16 @@ namespace Math3Game.Controller
     public class Swapper
     {
         private ItemSearcher itemSearcher;
+        private MatchScannerTrigger matchScannerTrigger;
         private Item selectedItem;
         private Item itemSwapped;
         private Vector2 itemInitialPosition;
         private Vector2 itemSwappedInitialPosition;
 
-        public Swapper(ItemSearcher itemSearcher)
+        public Swapper(ItemSearcher itemSearcher, MatchScannerTrigger matchScannerTrigger)
         {
             this.itemSearcher = itemSearcher;
+            this.matchScannerTrigger = matchScannerTrigger;
         }
 
         public void Initialize(Item selectedItem)
@@ -79,8 +82,7 @@ namespace Math3Game.Controller
                 return;
             }
 
-            // TODO: Dispose matched items
-            // TODO: Tell there is a match so board can be updated
+            matchScannerTrigger.Scan();
         }
 
         private bool CanSwap()

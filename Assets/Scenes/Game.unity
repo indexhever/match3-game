@@ -208,6 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   physics2DRaycaster: {fileID: 1235828515}
+  matchScanner: {fileID: 759318269}
 --- !u!1 &259590979
 GameObject:
   m_ObjectHideFlags: 0

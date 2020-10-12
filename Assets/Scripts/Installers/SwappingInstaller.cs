@@ -1,4 +1,5 @@
 ﻿using Math3Game.Controller;
+using Math3Game.View;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,6 +12,8 @@ namespace Math3Game.Installer
     {
         [SerializeField]
         private Physics2DRaycaster physics2DRaycaster;
+        [SerializeField]
+        private MatchScanner matchScanner;
 
         public override void InstallBindings()
         {
@@ -28,6 +31,9 @@ namespace Math3Game.Installer
             Container.Bind<SwappingInputSwitch>()
                      .To<PhysicsRaycastSwappingInputSwitch>()
                      .AsSingle();
+
+            Container.Bind<MatchScannerTrigger>()
+                     .FromInstance(matchScanner);
         }
     }
 }
