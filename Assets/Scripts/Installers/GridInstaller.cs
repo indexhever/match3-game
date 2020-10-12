@@ -21,6 +21,8 @@ namespace Math3Game.Installer
         private float offsetBetweenItens;
         [SerializeField]
         private GameObject itemPrefab;
+        [SerializeField]
+        private Sprite[] gemImages;
 
         public override void InstallBindings()
         {
@@ -28,13 +30,13 @@ namespace Math3Game.Installer
                      .AsSingle()
                      .WithArguments<int, int, Vector2, float>(rows, columns, gridTransform.position, offsetBetweenItens);
 
-            Container.BindFactory<Vector2, Gem, Gem.Factory>()
+            Container.BindFactory<Vector2, Sprite, Gem, Gem.Factory>()
                      .FromComponentInNewPrefab(itemPrefab);
 
             Container.Bind<ItemFactory>()
                      .To<DefaultItemFactory>()
                      .AsSingle()
-                     .WithArguments<Vector2>(CalculateItemMeasures());
+                     .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
         }
 
         private Vector2 CalculateItemMeasures()

@@ -3,7 +3,8 @@
     "references": [
         "UnityEngine.TestRunner",
         "UnityEditor.TestRunner",
-        "GridFramework"
+        "GridFramework",
+        "Match3Game"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

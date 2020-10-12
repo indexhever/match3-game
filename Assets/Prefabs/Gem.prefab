@@ -11,7 +11,11 @@ GameObject:
   - component: {fileID: 2676155394702551715}
   - component: {fileID: 2676155394702551714}
   - component: {fileID: 4407079669444400304}
-  m_Layer: 0
+  - component: {fileID: 605581297360085473}
+  - component: {fileID: 8084574850057632840}
+  - component: {fileID: 3354322705377858276}
+  - component: {fileID: 7629752281727642764}
+  m_Layer: 8
   m_Name: Gem
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,3 +98,161 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5fbc76d12477edd47b8102118b5800c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gemRigidbody: {fileID: 605581297360085473}
+  spriteRenderer: {fileID: 2676155394702551714}
+--- !u!50 &605581297360085473
+Rigidbody2D:
+  serializedVersion: 4
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676155394702551713}
+  m_BodyType: 1
+  m_Simulated: 1
+  m_UseFullKinematicContacts: 0
+  m_UseAutoMass: 0
+  m_Mass: 1
+  m_LinearDrag: 0
+  m_AngularDrag: 0.05
+  m_GravityScale: 1
+  m_Material: {fileID: 0}
+  m_Interpolate: 0
+  m_SleepingMode: 1
+  m_CollisionDetection: 0
+  m_Constraints: 4
+--- !u!61 &8084574850057632840
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676155394702551713}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 1, y: 1}
+    newSize: {x: 2.56, y: 2.56}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.78, y: 0.95}
+  m_EdgeRadius: 0
+--- !u!114 &3354322705377858276
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676155394702551713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ccb4c95cdb5c18142abcddeaaba198ef, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  OnSlidingUp:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnSlidingUp
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSlidingDown:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnSlidingDown
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSlidingRight:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnSlidingRight
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnSlidingLeft:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnSlidingLeft
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnInitialPosition:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnInitialPosition
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  OnEndSliding:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 7629752281727642764}
+        m_MethodName: OnEnd
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &7629752281727642764
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676155394702551713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4c03d244df31b8941bd4a8a4d420e073, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentItem: {fileID: 4407079669444400304}
