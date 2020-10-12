@@ -28,37 +28,35 @@ namespace Math3Game.Controller
         public void SwapUp()
         {
             itemSwapped = itemSearcher.GetItemAbove(selectedItem);
-            itemSwappedInitialPosition = itemSwapped.Position;
-            Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = itemSwapped.Position;
-            itemSwapped.Position = selectedItemCurrentPosition;
+            Swap();
         }
 
         public void SwapRight()
         {
             itemSwapped = itemSearcher.GetItemRight(selectedItem);
-            itemSwappedInitialPosition = itemSwapped.Position;
-            Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = itemSwapped.Position;
-            itemSwapped.Position = selectedItemCurrentPosition;
+            Swap();
         }
 
         public void SwapDown()
         {
             itemSwapped = itemSearcher.GetItemUnder(selectedItem);
-            itemSwappedInitialPosition = itemSwapped.Position;
-            Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = itemSwapped.Position;
-            itemSwapped.Position = selectedItemCurrentPosition;
+            Swap();
         }
 
         public void SwapLeft()
         {
             itemSwapped = itemSearcher.GetItemLeft(selectedItem);
+            Swap();
+        }
+
+        private void Swap()
+        {
             itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
             selectedItem.Position = itemSwapped.Position;
             itemSwapped.Position = selectedItemCurrentPosition;
+
+            itemSearcher.SwapItems(selectedItem, itemSwapped);
         }
 
         public void Reset()
@@ -70,6 +68,70 @@ namespace Math3Game.Controller
 
             selectedItem.Position = itemInitialPosition;
             itemSwapped.Position = itemSwappedInitialPosition;
+            itemSearcher.SwapItems(selectedItem, itemSwapped);
+        }
+
+        public void CompleteSwap()
+        {
+            if (!CanSwap())
+            {
+                Reset();
+                return;
+            }
+
+            // TODO: Dispose matched items
+            // TODO: Tell there is a match so board can be updated
+        }
+
+        private bool CanSwap()
+        {
+            return CanSwapRight() || CanSwapLeft() || CanSwapUp() || CanSwapDown();
+        }
+
+        private bool CanSwapRight()
+        {
+            return CanSwapRoutine(itemSearcher.GetItemRight);
+        }
+
+        private bool CanSwapLeft()
+        {
+            return CanSwapRoutine(itemSearcher.GetItemLeft);
+        }
+
+        private bool CanSwapUp()
+        {
+            return CanSwapRoutine(itemSearcher.GetItemAbove);
+        }
+
+        private bool CanSwapDown()
+        {
+            return CanSwapRoutine(itemSearcher.GetItemUnder);
+        }
+
+        private bool CanSwapRoutine(Func<Item, Item> getNeighborOf)
+        {
+            bool isTherAMatchInOneSide = true;
+            bool isTherAMatchInOtherSide = true;
+            Item foundItemSwappedNeighbor = itemSwapped;
+            Item foundSelectedItemNeighbor = selectedItem;
+            for (int i = 0; i < 2; i++)
+            {
+                // check if new neighbor of itemSwapped match its type
+                foundItemSwappedNeighbor = getNeighborOf(foundItemSwappedNeighbor);
+                if (!foundItemSwappedNeighbor.Equals(itemSwapped))
+                {
+                    isTherAMatchInOneSide = false;
+                }
+
+                // check if new neighbor of selectedItem match its type
+                foundSelectedItemNeighbor = getNeighborOf(foundSelectedItemNeighbor);
+                if (!foundSelectedItemNeighbor.Equals(selectedItem))
+                {
+                    isTherAMatchInOtherSide = false;
+                }
+            }
+
+            return isTherAMatchInOneSide || isTherAMatchInOtherSide;
         }
     }
 }

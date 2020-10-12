@@ -12,5 +12,6 @@ namespace Math3Game.Controller
         Item GetItemUnder(Item givenItem);
         Item GetItemRight(Item givenItem);
         Item GetItemLeft(Item givenItem);
+        void SwapItems(Item selectedItem, Item itemSwapped);
     }
 }

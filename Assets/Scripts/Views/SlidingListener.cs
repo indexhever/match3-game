@@ -63,13 +63,13 @@ namespace Math3Game.View
 
         public void OnInitialPosition()
         {
-            isSwapping = false;
             swapper.Reset();
         }
 
         public void OnEnd()
         {
             isSwapping = false;
+            swapper.CompleteSwap();
         }
     }
 }

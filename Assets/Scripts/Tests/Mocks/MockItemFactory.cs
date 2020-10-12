@@ -15,7 +15,11 @@ namespace Tests
 
         public Item Create(Vector2 newItemPosition)
         {
-            return new MockItem(newItemPosition);
+            return new MockItem(newItemPosition, "");
+        }
+        public Item Create(Vector2 newItemPosition, string gemType)
+        {
+            return new MockItem(newItemPosition, gemType);
         }
     }
 }

@@ -7,11 +7,13 @@ namespace GridFramework
 {
     public class GameGrid
     {
+        private readonly NullItem NULL_ITEM = new NullItem();
+
         private ItemFactory itemFactory;
         private Vector2 origin;
         private Item[] items;
         private float offsetBetweenItens;
-        private Vector2 itemMeasuresInUnit;
+        private Vector2 itemMeasuresInUnit;        
 
         public GameGrid(int rows, int columns, ItemFactory itemFactory, Vector2 origin, float offsetBetweenItens)
         {
@@ -39,14 +41,30 @@ namespace GridFramework
                     newItem = itemFactory.Create(newItemPosition);
                     newItem.Row = row;
                     newItem.Column = column;
-                    items[GetPositionFromRowColum(row, column)] = newItem;
+                    items[GetPositionFromRowColumn(row, column)] = newItem;
                 }                
             }
         }
 
         public Item GetItemByRowColumn(int row, int column)
         {
-            return items[GetPositionFromRowColum(row, column)];
+            if (row < 0 || row >= Rows || column < 0 || column >= Columns)
+                return NULL_ITEM;
+            return items[GetPositionFromRowColumn(row, column)];
+        }
+
+        public void SwapItems(Item firstItem, Item secondItem)
+        {
+            int firstItemRow = firstItem.Row;
+            int firstItemColumn = firstItem.Column;
+
+            items[GetPositionFromRowColumn(secondItem.Row, secondItem.Column)] = firstItem;
+            items[GetPositionFromRowColumn(firstItemRow, firstItemColumn)] = secondItem;
+
+            firstItem.Row = secondItem.Row;
+            firstItem.Column = secondItem.Column;
+            secondItem.Row = firstItemRow;
+            secondItem.Column = firstItemColumn;
         }
 
         private Vector2 CreateItemPositionByRowAndColum(int row, int column)
@@ -82,7 +100,7 @@ namespace GridFramework
             return new Vector2(finalPositionX, finalPositionY);
         }
 
-        private int GetPositionFromRowColum(int row, int column)
+        private int GetPositionFromRowColumn(int row, int column)
         {
             return row * Columns + column;
         }

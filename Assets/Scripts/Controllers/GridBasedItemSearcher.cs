@@ -34,5 +34,10 @@ namespace Math3Game.Controller
         {
             return grid.GetItemByRowColumn(givenItem.Row, givenItem.Column - 1);
         }
+
+        public void SwapItems(Item firstItem, Item secondItem)
+        {
+            grid.SwapItems(firstItem, secondItem);
+        }
     }
 }

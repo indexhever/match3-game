@@ -7,10 +7,12 @@ namespace Tests
     public class MockItem : Item
     {
         private Vector2 newItemPosition;
+        private string gemType;
 
-        public MockItem(Vector2 newItemPosition)
+        public MockItem(Vector2 newItemPosition, string gemType)
         {
             this.newItemPosition = newItemPosition;
+            this.gemType = gemType;
         }
 
         public Vector2 Position 
@@ -27,5 +29,13 @@ namespace Tests
 
         public int Row { get; set; }
         public int Column { get; set; }
+
+        public Sprite Image => throw new System.NotImplementedException();
+        public string GemType => gemType; 
+
+        public bool Equals(Item other)
+        {
+            return (other as MockItem).GemType.Equals(gemType);
+        }
     }
 }

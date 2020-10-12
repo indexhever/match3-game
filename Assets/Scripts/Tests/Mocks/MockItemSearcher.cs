@@ -34,5 +34,10 @@ namespace Tests
         {
             return searcher();
         }
+
+        public void SwapItems(Item selectedItem, Item itemSwapped)
+        {
+            
+        }
     }
 }

@@ -101,10 +101,27 @@ namespace Tests.Unit
         }
 
         // when releasing swapp if two itens can stay at their new places, there is a match and board is updated
-
-        private Item CreateItem(Vector2 initialPosition)
+        [Test]
+        public void EndingSlideWillTryToMatchItems()
         {
-            return new MockItem(initialPosition);
+            Vector2 expectedSelectedItemPosition = Vector2.up;
+            Vector2 selectedItemInitialPosition = Vector2.zero;
+            Item itemLeft = CreateItem(expectedSelectedItemPosition, "apple");
+            Item selectedItem = CreateItem(selectedItemInitialPosition, "banana");
+            ItemSearcher itemSearcher = CreateMockItemSearcher(() => itemLeft);
+            Swapper swapper = CreateSwapper(itemSearcher);
+            swapper.Initialize(selectedItem);
+
+            swapper.SwapLeft();
+            swapper.CompleteSwap();
+            Vector2 selectedItemPosition = selectedItem.Position;
+
+            Assert.AreEqual(expectedSelectedItemPosition, selectedItemPosition);
+        }
+
+        private Item CreateItem(Vector2 initialPosition, string gemType = "")
+        {
+            return new MockItem(initialPosition, gemType);
         }
 
         private Swapper CreateSwapper(ItemSearcher itemSearcher)
@@ -112,9 +129,9 @@ namespace Tests.Unit
             return new Swapper(itemSearcher);
         }
 
-        private ItemSearcher CreateMockItemSearcher(Func<Item> aboveSearcher)
+        private ItemSearcher CreateMockItemSearcher(Func<Item> searcher)
         {
-            return new MockItemSearcher(aboveSearcher);
+            return new MockItemSearcher(searcher);
         }
     }
 }

@@ -28,12 +28,19 @@ namespace Math3Game.View
         public int Row { get; set; }
 
         public int Column { get; set; }
+        public Sprite Image { get => spriteRenderer.sprite; }
 
         [Inject]
         public void Construct(Vector2 initialPosition, Sprite gemImage)
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
+        }
+
+        public bool Equals(Item other)
+        {
+
+            return other.Image == Image;
         }
 
         public class Factory : PlaceholderFactory<Vector2, Sprite, Gem>
