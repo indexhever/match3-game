@@ -35,7 +35,7 @@ namespace Tests
 
         public bool Equals(Item other)
         {
-            return (other as MockItem).GemType.Equals(gemType);
+            return (other as MockItem).GemType == gemType;
         }
     }
 }

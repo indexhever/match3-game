@@ -9,35 +9,53 @@ namespace Tests
 {
     public class MockItemSearcher : ItemSearcher
     {
-        private Func<Item> searcher;
-        public MockItemSearcher(Func<Item> searcher)
+        private Func<Item> getItemRight;
+        private Func<Item> getItemLeft;
+        private Func<Item> getItemUp;
+        private Func<Item> getItemDown;
+        private string neighborType;
+
+        public bool HasItemSwapped;
+
+        public MockItemSearcher
+        (
+            Func<Item> getItemRight, 
+            Func<Item> getItemLeft, 
+            Func<Item> getItemUp, 
+            Func<Item> getItemDown, 
+            string neighborType = ""
+        )
         {
-            this.searcher = searcher;
+            this.getItemRight = getItemRight;
+            this.getItemLeft = getItemLeft;
+            this.getItemUp = getItemUp;
+            this.getItemDown = getItemDown;
+            this.neighborType = neighborType;
         }
 
         public Item GetItemAbove(Item givenItem)
         {
-            return searcher();
+            return getItemUp();
         }
 
         public Item GetItemLeft(Item givenItem)
         {
-            return searcher();
+            return getItemLeft();
         }
 
         public Item GetItemRight(Item givenItem)
         {
-            return searcher();
+            return getItemRight();
         }
 
         public Item GetItemUnder(Item givenItem)
         {
-            return searcher();
+            return getItemDown();
         }
 
         public void SwapItems(Item selectedItem, Item itemSwapped)
         {
-            
+            HasItemSwapped = neighborType == (selectedItem as MockItem).GemType;
         }
     }
 }
