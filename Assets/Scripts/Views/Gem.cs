@@ -43,6 +43,11 @@ namespace Math3Game.View
             return other.Image == Image;
         }
 
+        public void Dispose()
+        {
+            gameObject.SetActive(false);
+        }
+
         public class Factory : PlaceholderFactory<Vector2, Sprite, Gem>
         {
 

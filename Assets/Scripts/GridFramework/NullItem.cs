@@ -16,5 +16,10 @@ namespace GridFramework
         {
             return false;
         }
+
+        public void Dispose()
+        {
+
+        }
     }
 }

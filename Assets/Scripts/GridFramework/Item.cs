@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace GridFramework
 {
-    public interface Item : IEquatable<Item>
+    public interface Item : IEquatable<Item>, IDisposable
     {
         Vector2 Position { get; set; }
         int Row { get; set; }
