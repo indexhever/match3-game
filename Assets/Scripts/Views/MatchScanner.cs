@@ -1,8 +1,10 @@
 ﻿using GridFramework;
+using Math3Game.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Zenject;
 
 namespace Math3Game.View
@@ -10,13 +12,15 @@ namespace Math3Game.View
     public class MatchScanner : MonoBehaviour
     {
         private GameGrid grid;
+        private SwappingInputSwitch swappingInputSwitch;
         private Stack<Item> rowItemMatcheds;
         private List<Stack<Item>> columnItemMatcheds;
 
         [Inject]
-        private void Construct(GameGrid grid)
+        private void Construct(GameGrid grid, SwappingInputSwitch swappingInputSwitch)
         {
             this.grid = grid;
+            this.swappingInputSwitch = swappingInputSwitch;
         }
 
         private void Start()
@@ -28,8 +32,6 @@ namespace Math3Game.View
             {
                 columnItemMatcheds.Add(new Stack<Item>());
             }
-
-            Scan();
         }
 
         public void Scan()
@@ -39,6 +41,7 @@ namespace Math3Game.View
 
         private IEnumerator ScanCoroutine()
         {
+            StopUIInput();
             Item currentItem;
             for(int row = 0; row < grid.Rows; row++)
             {
@@ -52,7 +55,9 @@ namespace Math3Game.View
                 }
                 yield return null;
             }
-            
+
+            yield return CleanAllStacks();
+            ReturnUIInput();
         }
 
         private void ScanItemStackWithItem(Stack<Item> previousMatchingItems, Item newItem)
@@ -84,6 +89,16 @@ namespace Math3Game.View
             }            
         }
 
+        private IEnumerator CleanAllStacks()
+        {
+            rowItemMatcheds.Clear();
+            for (int i = 0; i < grid.Columns; i++)
+            {
+                columnItemMatcheds[i].Clear();
+                yield return null;
+            }
+        }
+
         private void DisposeItemsFromStack(Stack<Item> itemMatchedStack)
         {
             int amountOfItemsToDespawn = itemMatchedStack.Count;
@@ -98,6 +113,16 @@ namespace Math3Game.View
         private static bool IsThereAMatchInStack(Stack<Item> itemMatchedStack)
         {
             return itemMatchedStack.Count >= 3;
+        }
+
+        private void StopUIInput()
+        {
+            swappingInputSwitch.TurnOff();
+        }
+
+        private void ReturnUIInput()
+        {
+            swappingInputSwitch.TurnOn();
         }
     }
 }
