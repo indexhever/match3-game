@@ -6,6 +6,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using Math3Game.Controller;
+using Math3Game.View;
 
 namespace Tests.Unit
 {
@@ -146,6 +147,31 @@ namespace Tests.Unit
             Assert.IsFalse((itemSearcher as MockItemSearcher).HasItemSwapped);
         }
 
+        [Test]
+        public void MatchScannerIsTriggeredAftwerCompleteSwapping()
+        {
+            Vector2 expectedSelectedItemPosition = Vector2.up;
+            Vector2 selectedItemInitialPosition = Vector2.zero;
+            Item itemLeft = CreateItem(expectedSelectedItemPosition, "apple");
+            Item selectedItem = CreateItem(selectedItemInitialPosition, "banana");
+            string neighborType = "banana";
+            ItemSearcher itemSearcher = CreateLeftMockItemSearcher(() => itemLeft, neighborType);
+            MatchScannerTrigger matchScannerTrigger = CreateMatchScannerTrigger();
+            Swapper swapper = CreateSwapper(itemSearcher, matchScannerTrigger);
+            swapper.Initialize(selectedItem);
+
+            swapper.SwapLeft();
+            swapper.CompleteSwap();
+            bool wasMatchScannerTriggerCalled = (matchScannerTrigger as MockMatchScannerTrigger).WasCalled;
+
+            Assert.IsTrue(wasMatchScannerTriggerCalled);
+        }
+
+        private MatchScannerTrigger CreateMatchScannerTrigger()
+        {
+            return new MockMatchScannerTrigger();
+        }
+
         private Item CreateItem(Vector2 initialPosition, string gemType = "")
         {
             return new MockItem(initialPosition, gemType);
@@ -153,7 +179,11 @@ namespace Tests.Unit
 
         private Swapper CreateSwapper(ItemSearcher itemSearcher)
         {
-            return new Swapper(itemSearcher);
+            return new Swapper(itemSearcher, new MockMatchScannerTrigger());
+        }
+        private Swapper CreateSwapper(ItemSearcher itemSearcher, MatchScannerTrigger matchScannerTrigger)
+        {
+            return new Swapper(itemSearcher, matchScannerTrigger);
         }
 
         private ItemSearcher CreateRightMockItemSearcher(Func<Item> getItemRight, string neighborType = "")

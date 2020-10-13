@@ -31,7 +31,12 @@ namespace Tests
         public int Column { get; set; }
 
         public Sprite Image => throw new System.NotImplementedException();
-        public string GemType => gemType; 
+        public string GemType => gemType;
+
+        public void Dispose()
+        {
+            
+        }
 
         public bool Equals(Item other)
         {
