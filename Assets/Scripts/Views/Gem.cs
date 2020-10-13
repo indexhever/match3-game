@@ -1,4 +1,5 @@
 ﻿using GridFramework;
+using Math3Game.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -31,16 +32,28 @@ namespace Math3Game.View
         public Sprite Image { get => spriteRenderer.sprite; }
 
         [Inject]
-        public void Construct(Vector2 initialPosition, Sprite gemImage)
+        public void Construct(Vector2 initialPosition, Sprite gemImage, BoardUpdater boardUpdater)
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
+            boardUpdater.SignOnUpdate(OnBoardUpdate);
+            boardUpdater.SignOnUpdateComplete(OnBoardComplete);
         }
 
         public bool Equals(Item other)
         {
 
             return other.Image == Image;
+        }
+
+        public void OnBoardUpdate()
+        {
+            gemRigidbody.isKinematic = false;
+        }
+
+        public void OnBoardComplete()
+        {
+            gemRigidbody.isKinematic = true;
         }
 
         public void Dispose()

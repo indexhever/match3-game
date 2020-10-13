@@ -34,6 +34,9 @@ namespace Math3Game.Installer
 
             Container.Bind<MatchScannerTrigger>()
                      .FromInstance(matchScanner);
+
+            Container.Bind<BoardUpdater>()
+                     .AsSingle();
         }
     }
 }

@@ -13,14 +13,17 @@ namespace Math3Game.View
     {
         private GameGrid grid;
         private SwappingInputSwitch swappingInputSwitch;
+        private BoardUpdater boardUpdater;
         private Stack<Item> rowItemMatcheds;
         private List<Stack<Item>> columnItemMatcheds;
+        private bool thereWasAMatch;
 
         [Inject]
-        private void Construct(GameGrid grid, SwappingInputSwitch swappingInputSwitch)
+        private void Construct(GameGrid grid, SwappingInputSwitch swappingInputSwitch, BoardUpdater boardUpdater)
         {
             this.grid = grid;
             this.swappingInputSwitch = swappingInputSwitch;
+            this.boardUpdater = boardUpdater;
         }
 
         private void Start()
@@ -32,6 +35,7 @@ namespace Math3Game.View
             {
                 columnItemMatcheds.Add(new Stack<Item>());
             }
+            boardUpdater.SignOnUpdateComplete(OnBoardUpdateComplete);
         }
 
         public void Scan()
@@ -41,11 +45,11 @@ namespace Math3Game.View
 
         private IEnumerator ScanCoroutine()
         {
-            StopUIInput();
+            StopSwappingInput();
             Item currentItem;
-            for(int row = 0; row < grid.Rows; row++)
+            for (int row = 0; row < grid.Rows; row++)
             {
-                for(int column = 0; column < grid.Columns; column++)
+                for (int column = 0; column < grid.Columns; column++)
                 {
                     currentItem = grid.GetItemByRowColumn(row, column);
                     ScanItemStackWithItem(rowItemMatcheds, currentItem);
@@ -57,7 +61,15 @@ namespace Math3Game.View
             }
 
             yield return CleanAllStacks();
-            ReturnUIInput();
+            OnScanningEnd();
+        }
+
+        private void OnScanningEnd()
+        {
+            if (thereWasAMatch)
+                RunGridUpdater();
+            else
+                ReturnSwappingInput();
         }
 
         private void ScanItemStackWithItem(Stack<Item> previousMatchingItems, Item newItem)
@@ -101,6 +113,7 @@ namespace Math3Game.View
 
         private void DisposeItemsFromStack(Stack<Item> itemMatchedStack)
         {
+            thereWasAMatch = true;
             int amountOfItemsToDespawn = itemMatchedStack.Count;
             Item currentItem;
             for (int i = 0; i < amountOfItemsToDespawn; i++)
@@ -115,14 +128,24 @@ namespace Math3Game.View
             return itemMatchedStack.Count >= 3;
         }
 
-        private void StopUIInput()
+        private void StopSwappingInput()
         {
             swappingInputSwitch.TurnOff();
         }
 
-        private void ReturnUIInput()
+        private void ReturnSwappingInput()
         {
             swappingInputSwitch.TurnOn();
+        }
+
+        private void RunGridUpdater()
+        {
+            boardUpdater.Run();
+        }
+
+        public void OnBoardUpdateComplete()
+        {
+            Scan();
         }
     }
 }
