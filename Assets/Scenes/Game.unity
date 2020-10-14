@@ -367,7 +367,7 @@ BoxCollider2D:
     adaptiveTiling: 0
   m_AutoTiling: 0
   serializedVersion: 2
-  m_Size: {x: 14.2, y: 1}
+  m_Size: {x: 14.2, y: 0.95}
   m_EdgeRadius: 0
 --- !u!4 &979547272
 Transform:
@@ -377,7 +377,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979547270}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.27, y: -2.23, z: -0.5285185}
+  m_LocalPosition: {x: -0.27, y: -2.325, z: -0.5285185}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -415,7 +415,7 @@ MonoBehaviour:
   gridTransform: {fileID: 47404668}
   rows: 6
   columns: 6
-  offsetBetweenItens: -0.1
+  offsetBetweenItens: 0
   itemPrefab: {fileID: 2676155394702551713, guid: 9a9a1da713e93f34fb99885cbbb56937,
     type: 3}
   slotPrefab: {fileID: 2676155394702551713, guid: b5e65913fdf0dd24d82330bc3730fd32,

@@ -46,12 +46,13 @@ namespace Math3Game.Installer
 
         private Vector2 CalculateItemMeasures()
         {
-            SpriteRenderer spriteRenderer = itemPrefab.GetComponent<SpriteRenderer>();
+            BoxCollider2D itemCollider = itemPrefab.GetComponent<BoxCollider2D>();
+            Debug.Log(itemCollider.size.y);
 
             return new Vector2(
-                spriteRenderer.sprite.texture.width / spriteRenderer.sprite.pixelsPerUnit,
-                spriteRenderer.sprite.texture.height / spriteRenderer.sprite.pixelsPerUnit
-            );            
+                itemCollider.size.x,
+                itemCollider.size.y
+            );
         }
     }
 }
