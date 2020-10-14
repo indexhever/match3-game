@@ -9,6 +9,7 @@ namespace Math3Game.Controller
     public class BoardUpdater
     {
         private SwappingInputSwitch swappingInputSwitch;
+        private int amountItemsOnBoard;
 
         public delegate void BoardUpdateAction();
         private event BoardUpdateAction OnUpdatingBoard, OnUpdateComplete;
@@ -28,6 +29,18 @@ namespace Math3Game.Controller
         public void Stop()
         {
             OnUpdateComplete?.Invoke();
+        }
+
+        public void IncreaseAmountItemsOnBoard()
+        {
+            amountItemsOnBoard++;
+            Debug.Log("Amount item: " + amountItemsOnBoard);
+        }
+
+        public void DecreaseAmountItemsOnBoard()
+        {
+            amountItemsOnBoard++;
+            Debug.Log("Amount item: " + amountItemsOnBoard);
         }
 
         public void SignOnUpdate(BoardUpdateAction boardUpdateAction)

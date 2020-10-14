@@ -22,6 +22,8 @@ namespace Math3Game.Installer
         [SerializeField]
         private GameObject itemPrefab;
         [SerializeField]
+        private GameObject slotPrefab;
+        [SerializeField]
         private Sprite[] gemImages;
 
         public override void InstallBindings()
@@ -37,6 +39,9 @@ namespace Math3Game.Installer
                      .To<DefaultItemFactory>()
                      .AsSingle()
                      .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.BindFactory<Vector2, Slot, Slot.Factory>()
+                     .FromComponentInNewPrefab(slotPrefab);
         }
 
         private Vector2 CalculateItemMeasures()
