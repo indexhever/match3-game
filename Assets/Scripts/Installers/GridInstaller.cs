@@ -25,6 +25,8 @@ namespace Math3Game.Installer
         private GameObject slotPrefab;
         [SerializeField]
         private Sprite[] gemImages;
+        [SerializeField]
+        private DefaultExtraItemSpawner defaultExtraItemSpawner;
 
         public override void InstallBindings()
         {
@@ -35,10 +37,20 @@ namespace Math3Game.Installer
             Container.BindFactory<Vector2, Sprite, Gem, Gem.Factory>()
                      .FromComponentInNewPrefab(itemPrefab);
 
+            // TODO: abstract ItemFactory and ExtraGemFactory to remove duplication
             Container.Bind<ItemFactory>()
                      .To<DefaultItemFactory>()
                      .AsSingle()
                      .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.Bind<ExtraGemFactory>()
+                     .AsSingle()
+                     .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.Bind<ExtraItemSpawner>()
+                     .To<DefaultExtraItemSpawner>()
+                     .FromInstance(defaultExtraItemSpawner);
+
 
             Container.BindFactory<Vector2, Slot, Slot.Factory>()
                      .FromComponentInNewPrefab(slotPrefab);
@@ -47,7 +59,6 @@ namespace Math3Game.Installer
         private Vector2 CalculateItemMeasures()
         {
             BoxCollider2D itemCollider = itemPrefab.GetComponent<BoxCollider2D>();
-            Debug.Log(itemCollider.size.y);
 
             return new Vector2(
                 itemCollider.size.x,

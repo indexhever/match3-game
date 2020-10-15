@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.PlayerLoop;
 using Zenject;
 
 namespace Math3Game.View
@@ -9,6 +10,7 @@ namespace Math3Game.View
     public class Slot : MonoBehaviour
     {
         private BoardUpdater boardUpdater;
+        private Gem currentGem;
 
         [Inject]
         public void Construct(Vector2 initialPosition, BoardUpdater boardUpdater)
@@ -19,12 +21,17 @@ namespace Math3Game.View
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            
+            currentGem = collision.GetComponent<Gem>();
+            currentGem.EnterSlot(this);
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
+        public void CleanGem()
         {
+            if (currentGem == null)
+                return;
 
+            boardUpdater.RequireGemForColumn(currentGem.Column);
+            currentGem = null;
         }
 
         public class Factory : PlaceholderFactory<Vector2, Slot>

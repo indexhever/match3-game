@@ -16,6 +16,7 @@ namespace Math3Game.View
         private BoardUpdater boardUpdater;
         private Stack<Item> rowItemMatcheds;
         private List<Stack<Item>> columnItemMatcheds;
+        private List<Item> itemsToBeDisposed;
         private bool thereWasAMatch;
 
         [Inject]
@@ -24,6 +25,7 @@ namespace Math3Game.View
             this.grid = grid;
             this.swappingInputSwitch = swappingInputSwitch;
             this.boardUpdater = boardUpdater;
+            itemsToBeDisposed = new List<Item>();
         }
 
         private void Start()
@@ -47,6 +49,7 @@ namespace Math3Game.View
         {
             StopSwappingInput();
             Item currentItem;
+            thereWasAMatch = false;
             for (int row = 0; row < grid.Rows; row++)
             {
                 for (int column = 0; column < grid.Columns; column++)
@@ -60,6 +63,7 @@ namespace Math3Game.View
                 yield return null;
             }
 
+            yield return DisposeItems();
             yield return CleanAllStacks();
             OnScanningEnd();
         }
@@ -93,7 +97,7 @@ namespace Math3Game.View
         {
             if (IsThereAMatchInStack(itemMatchedStack))
             {
-                DisposeItemsFromStack(itemMatchedStack);
+                SetDisposeItemsFromStack(itemMatchedStack);
             }
             else
             {
@@ -111,7 +115,17 @@ namespace Math3Game.View
             }
         }
 
-        private void DisposeItemsFromStack(Stack<Item> itemMatchedStack)
+        private IEnumerator DisposeItems()
+        {
+            foreach(Item itemToDispose in itemsToBeDisposed)
+            {
+                itemToDispose.Dispose();
+                yield return null;
+            }
+            itemsToBeDisposed.Clear();
+        }
+
+        private void SetDisposeItemsFromStack(Stack<Item> itemMatchedStack)
         {
             thereWasAMatch = true;
             int amountOfItemsToDespawn = itemMatchedStack.Count;
@@ -119,8 +133,13 @@ namespace Math3Game.View
             for (int i = 0; i < amountOfItemsToDespawn; i++)
             {
                 currentItem = itemMatchedStack.Pop();
-                currentItem.Dispose();
+                AddItemToBeDisposed(currentItem);
             }
+        }
+
+        private void AddItemToBeDisposed(Item currentItem)
+        {
+            itemsToBeDisposed.Add(currentItem);
         }
 
         private static bool IsThereAMatchInStack(Stack<Item> itemMatchedStack)
@@ -145,7 +164,7 @@ namespace Math3Game.View
 
         public void OnBoardUpdateComplete()
         {
-            Scan();
+            //Scan();
         }
     }
 }

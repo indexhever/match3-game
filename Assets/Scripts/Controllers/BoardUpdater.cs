@@ -1,4 +1,6 @@
-﻿using System;
+﻿using GridFramework;
+using Math3Game.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,38 +11,34 @@ namespace Math3Game.Controller
     public class BoardUpdater
     {
         private SwappingInputSwitch swappingInputSwitch;
-        private int amountItemsOnBoard;
+        private ExtraItemSpawner extraItemSpawner;
 
         public delegate void BoardUpdateAction();
         private event BoardUpdateAction OnUpdatingBoard, OnUpdateComplete;
 
         [Inject]
-        private void Construct(SwappingInputSwitch swappingInputSwitch)
+        private void Construct(SwappingInputSwitch swappingInputSwitch, ExtraItemSpawner extraItemSpawner)
         {
             this.swappingInputSwitch = swappingInputSwitch;
+            this.extraItemSpawner = extraItemSpawner;            
         }
 
         public void Run()
         {
             swappingInputSwitch.TurnOff();
-            OnUpdatingBoard?.Invoke();
+            
+            extraItemSpawner.StartSpawning();
         }
 
         public void Stop()
         {
-            OnUpdateComplete?.Invoke();
+            OnUpdatingBoard?.Invoke();
+            //OnUpdateComplete?.Invoke();
         }
 
-        public void IncreaseAmountItemsOnBoard()
+        public void RequireGemForColumn(int column)
         {
-            amountItemsOnBoard++;
-            Debug.Log("Amount item: " + amountItemsOnBoard);
-        }
-
-        public void DecreaseAmountItemsOnBoard()
-        {
-            amountItemsOnBoard++;
-            Debug.Log("Amount item: " + amountItemsOnBoard);
+            extraItemSpawner.RequireGemPerColumn(column);            
         }
 
         public void SignOnUpdate(BoardUpdateAction boardUpdateAction)
@@ -48,9 +46,19 @@ namespace Math3Game.Controller
             OnUpdatingBoard += boardUpdateAction;
         }
 
+        public void UnsignOnUpdate(BoardUpdateAction boardUpdateAction)
+        {
+            OnUpdatingBoard -= boardUpdateAction;
+        }
+
         public void SignOnUpdateComplete(BoardUpdateAction boardUpdateAction)
         {
             OnUpdateComplete += boardUpdateAction;
+        }
+
+        public void UnSignOnUpdateComplete(BoardUpdateAction boardUpdateAction)
+        {
+            OnUpdateComplete -= boardUpdateAction;
         }
     }
 }

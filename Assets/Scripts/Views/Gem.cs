@@ -9,6 +9,9 @@ namespace Math3Game.View
 {
     public class Gem : MonoBehaviour, Item
     {
+        private Slot currentSlot;
+        private BoardUpdater boardUpdater;
+
         [SerializeField]
         private Rigidbody2D gemRigidbody;
         [SerializeField]
@@ -36,6 +39,7 @@ namespace Math3Game.View
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
+            this.boardUpdater = boardUpdater;
             boardUpdater.SignOnUpdate(OnBoardUpdate);
             boardUpdater.SignOnUpdateComplete(OnBoardComplete);
         }
@@ -56,9 +60,20 @@ namespace Math3Game.View
             gemRigidbody.isKinematic = true;
         }
 
+        public void EnterSlot(Slot slot)
+        {
+            this.currentSlot = slot;
+        }
+
         public void Dispose()
         {
+            if (!gameObject.activeInHierarchy)
+                return;
+
             gameObject.SetActive(false);
+            currentSlot.CleanGem();
+            boardUpdater.UnsignOnUpdate(OnBoardUpdate);
+            boardUpdater.UnSignOnUpdateComplete(OnBoardComplete);
         }
 
         public class Factory : PlaceholderFactory<Vector2, Sprite, Gem>
