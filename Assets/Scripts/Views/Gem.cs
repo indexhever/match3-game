@@ -11,6 +11,7 @@ namespace Math3Game.View
     {
         private Slot currentSlot;
         private BoardUpdater boardUpdater;
+        private Scorer scorer;
 
         [SerializeField]
         private Rigidbody2D gemRigidbody;
@@ -35,11 +36,12 @@ namespace Math3Game.View
         public Sprite Image { get => spriteRenderer.sprite; }
 
         [Inject]
-        public void Construct(Vector2 initialPosition, Sprite gemImage, BoardUpdater boardUpdater)
+        public void Construct(Vector2 initialPosition, Sprite gemImage, BoardUpdater boardUpdater, Scorer scorer)
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
             this.boardUpdater = boardUpdater;
+            this.scorer = scorer;
             boardUpdater.SignOnUpdate(OnBoardUpdate);
             boardUpdater.SignOnUpdateComplete(OnBoardComplete);
         }
@@ -70,6 +72,7 @@ namespace Math3Game.View
             if (!gameObject.activeInHierarchy)
                 return;
 
+            scorer.IncreaseScore();
             gameObject.SetActive(false);
             currentSlot.CleanGem();
             boardUpdater.UnsignOnUpdate(OnBoardUpdate);
