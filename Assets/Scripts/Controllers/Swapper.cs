@@ -15,11 +15,13 @@ namespace Math3Game.Controller
         private Item itemSwapped;
         private Vector2 itemInitialPosition;
         private Vector2 itemSwappedInitialPosition;
+        private SwapSoundController swapSoundController;
 
-        public Swapper(ItemSearcher itemSearcher, MatchScannerTrigger matchScannerTrigger)
+        public Swapper(ItemSearcher itemSearcher, MatchScannerTrigger matchScannerTrigger, SwapSoundController swapSoundController)
         {
             this.itemSearcher = itemSearcher;
             this.matchScannerTrigger = matchScannerTrigger;
+            this.swapSoundController = swapSoundController;
         }
 
         public void Initialize(Item selectedItem)
@@ -54,6 +56,7 @@ namespace Math3Game.Controller
 
         private void Swap()
         {
+            swapSoundController.PlaySwapSound();
             itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
             selectedItem.Position = itemSwapped.Position;

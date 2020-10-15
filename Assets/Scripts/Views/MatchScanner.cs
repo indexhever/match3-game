@@ -14,17 +14,23 @@ namespace Math3Game.View
         private GameGrid grid;
         private SwappingInputSwitch swappingInputSwitch;
         private BoardUpdater boardUpdater;
+        private MatchSoundController matchSoundController;
         private Stack<Item> rowItemMatcheds;
         private List<Stack<Item>> columnItemMatcheds;
         private List<Item> itemsToBeDisposed;
         private bool thereWasAMatch;
 
         [Inject]
-        private void Construct(GameGrid grid, SwappingInputSwitch swappingInputSwitch, BoardUpdater boardUpdater)
+        private void Construct(
+            GameGrid grid, 
+            SwappingInputSwitch swappingInputSwitch, 
+            BoardUpdater boardUpdater, 
+            MatchSoundController matchSoundController)
         {
             this.grid = grid;
             this.swappingInputSwitch = swappingInputSwitch;
             this.boardUpdater = boardUpdater;
+            this.matchSoundController = matchSoundController;
             itemsToBeDisposed = new List<Item>();
         }
 
@@ -117,7 +123,8 @@ namespace Math3Game.View
 
         private IEnumerator DisposeItems()
         {
-            foreach(Item itemToDispose in itemsToBeDisposed)
+            matchSoundController.PlayMatchSound();
+            foreach (Item itemToDispose in itemsToBeDisposed)
             {
                 itemToDispose.Dispose();
                 yield return null;
