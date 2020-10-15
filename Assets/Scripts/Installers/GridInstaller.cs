@@ -22,7 +22,11 @@ namespace Math3Game.Installer
         [SerializeField]
         private GameObject itemPrefab;
         [SerializeField]
+        private GameObject slotPrefab;
+        [SerializeField]
         private Sprite[] gemImages;
+        [SerializeField]
+        private DefaultExtraItemSpawner defaultExtraItemSpawner;
 
         public override void InstallBindings()
         {
@@ -33,20 +37,33 @@ namespace Math3Game.Installer
             Container.BindFactory<Vector2, Sprite, Gem, Gem.Factory>()
                      .FromComponentInNewPrefab(itemPrefab);
 
+            // TODO: abstract ItemFactory and ExtraGemFactory to remove duplication
             Container.Bind<ItemFactory>()
                      .To<DefaultItemFactory>()
                      .AsSingle()
                      .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.Bind<ExtraGemFactory>()
+                     .AsSingle()
+                     .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.Bind<ExtraItemSpawner>()
+                     .To<DefaultExtraItemSpawner>()
+                     .FromInstance(defaultExtraItemSpawner);
+
+
+            Container.BindFactory<Vector2, Slot, Slot.Factory>()
+                     .FromComponentInNewPrefab(slotPrefab);
         }
 
         private Vector2 CalculateItemMeasures()
         {
-            SpriteRenderer spriteRenderer = itemPrefab.GetComponent<SpriteRenderer>();
+            BoxCollider2D itemCollider = itemPrefab.GetComponent<BoxCollider2D>();
 
             return new Vector2(
-                spriteRenderer.sprite.texture.width / spriteRenderer.sprite.pixelsPerUnit,
-                spriteRenderer.sprite.texture.height / spriteRenderer.sprite.pixelsPerUnit
-            );            
+                itemCollider.size.x,
+                itemCollider.size.y
+            );
         }
     }
 }
