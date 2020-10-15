@@ -20,7 +20,7 @@ namespace Math3Game.Installer
             Container.Bind<Swapper>()
                      .AsTransient();
 
-            Container.Bind<ItemSearcher>()
+            Container.Bind<ItemSearcher<Gem>>()
                      .To<GridBasedItemSearcher>()
                      .AsSingle();
 

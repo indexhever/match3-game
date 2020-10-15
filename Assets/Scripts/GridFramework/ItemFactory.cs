@@ -4,10 +4,11 @@ using UnityEngine;
 
 namespace GridFramework
 {
-    public interface ItemFactory
+    public interface ItemFactory<ItemType>
     {
         Vector2 MeasuresInUnit { get; }
 
-        Item Create(Vector2 newItemPosition);
+        ItemType Create(Vector2 newItemPosition);
+        ItemType CreateNull();
     }
 }

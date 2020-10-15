@@ -11,7 +11,7 @@ namespace Math3Game.View
 {
     public class DefaultExtraItemSpawner : MonoBehaviour, ExtraItemSpawner
     {
-        private GameGrid grid;
+        private GameGrid<Gem> grid;
         private ExtraGemFactory extraGemFactory;
         private int[] amountExtraItemsToCreatePerColumn;
         private BoardUpdater boardUpdater;
@@ -21,7 +21,7 @@ namespace Math3Game.View
         private float amountSecondsWaitToSpawnAnother = .3f;
 
         [Inject]
-        private void Construct(GameGrid grid, ExtraGemFactory extraGemFactory, BoardUpdater boardUpdater)
+        private void Construct(GameGrid<Gem> grid, ExtraGemFactory extraGemFactory, BoardUpdater boardUpdater)
         {
             this.grid = grid;
             this.extraGemFactory = extraGemFactory;

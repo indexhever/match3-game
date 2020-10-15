@@ -10,11 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 2676155394702551715}
   - component: {fileID: 2676155394702551714}
-  - component: {fileID: 4407079669444400304}
   - component: {fileID: 605581297360085473}
   - component: {fileID: 8084574850057632840}
   - component: {fileID: 3354322705377858276}
   - component: {fileID: 7629752281727642764}
+  - component: {fileID: 1356027183428167118}
   m_Layer: 8
   m_Name: Gem
   m_TagString: Untagged
@@ -86,20 +86,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &4407079669444400304
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2676155394702551713}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 5fbc76d12477edd47b8102118b5800c1, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  gemRigidbody: {fileID: 605581297360085473}
-  spriteRenderer: {fileID: 2676155394702551714}
 --- !u!50 &605581297360085473
 Rigidbody2D:
   serializedVersion: 4
@@ -255,4 +241,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c03d244df31b8941bd4a8a4d420e073, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentItem: {fileID: 4407079669444400304}
+  currentItem: {fileID: 1356027183428167118}
+--- !u!114 &1356027183428167118
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2676155394702551713}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dfda4a4eb7e602488cbc557e9be5e1d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gemRigidbody: {fileID: 605581297360085473}
+  spriteRenderer: {fileID: 2676155394702551714}

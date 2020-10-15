@@ -1,5 +1,6 @@
 ﻿using GridFramework;
 using Math3Game.Controller;
+using Math3Game.View;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,22 +8,22 @@ using UnityEngine;
 
 namespace Tests
 {
-    public class MockItemSearcher : ItemSearcher
+    public class MockItemSearcher : ItemSearcher<Gem>
     {
-        private Func<Item> getItemRight;
-        private Func<Item> getItemLeft;
-        private Func<Item> getItemUp;
-        private Func<Item> getItemDown;
+        private Func<Gem> getItemRight;
+        private Func<Gem> getItemLeft;
+        private Func<Gem> getItemUp;
+        private Func<Gem> getItemDown;
         private string neighborType;
 
         public bool HasItemSwapped;
 
         public MockItemSearcher
         (
-            Func<Item> getItemRight, 
-            Func<Item> getItemLeft, 
-            Func<Item> getItemUp, 
-            Func<Item> getItemDown, 
+            Func<Gem> getItemRight, 
+            Func<Gem> getItemLeft, 
+            Func<Gem> getItemUp, 
+            Func<Gem> getItemDown, 
             string neighborType = ""
         )
         {
@@ -33,27 +34,27 @@ namespace Tests
             this.neighborType = neighborType;
         }
 
-        public Item GetItemAbove(Item givenItem)
+        public Gem GetItemAbove(Gem givenItem)
         {
             return getItemUp();
         }
 
-        public Item GetItemLeft(Item givenItem)
+        public Gem GetItemLeft(Gem givenItem)
         {
             return getItemLeft();
         }
 
-        public Item GetItemRight(Item givenItem)
+        public Gem GetItemRight(Gem givenItem)
         {
             return getItemRight();
         }
 
-        public Item GetItemUnder(Item givenItem)
+        public Gem GetItemUnder(Gem givenItem)
         {
             return getItemDown();
         }
 
-        public void SwapItems(Item selectedItem, Item itemSwapped)
+        public void SwapItems(Gem selectedItem, Gem itemSwapped)
         {
             HasItemSwapped = neighborType == (selectedItem as MockItem).GemType;
         }

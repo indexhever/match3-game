@@ -8,17 +8,20 @@ namespace Math3Game.View
 {
     public class GridSetup : MonoBehaviour
     {
-        private GameGrid gameGrid;
+        private GameGrid<Gem> gemGrid;
+        GameGrid<Slot> slotGrid;
 
         [Inject]
-        private void Construct(GameGrid gameGrid)
+        private void Construct(GameGrid<Gem> gemGrid, GameGrid<Slot> slotGrid)
         {
-            this.gameGrid = gameGrid;
+            this.gemGrid = gemGrid;
+            this.slotGrid = slotGrid;
         }
 
         private void Start()
         {
-            gameGrid.GenerateItems();
+            slotGrid.GenerateItems();
+            gemGrid.GenerateItems();
         }
     }
 }

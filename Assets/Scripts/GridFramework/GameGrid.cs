@@ -5,23 +5,23 @@ using UnityEngine;
 
 namespace GridFramework
 {
-    public class GameGrid
+    public class GameGrid<ItemType> where ItemType : Item
     {
-        private readonly NullItem NULL_ITEM = new NullItem();
-
-        private ItemFactory itemFactory;
+        private readonly ItemType NULL_ITEM;
+        private ItemFactory<ItemType> itemFactory;
         private Vector2 origin;
-        private Item[] items;
+        private ItemType[] items;
         private float offsetBetweenItens;
         private Vector2 itemMeasuresInUnit;        
 
-        public GameGrid(int rows, int columns, ItemFactory itemFactory, Vector2 origin, float offsetBetweenItens)
+        public GameGrid(int rows, int columns, ItemFactory<ItemType> itemFactory, Vector2 origin, float offsetBetweenItens)
         {
             Rows = rows;
             Columns = columns;
             this.itemFactory = itemFactory;
             this.origin = origin;
-            items = new Item[Rows * Columns];
+            items = new ItemType[Rows * Columns];
+            NULL_ITEM = itemFactory.CreateNull();
             this.offsetBetweenItens = offsetBetweenItens;
             this.itemMeasuresInUnit = itemFactory.MeasuresInUnit;
         }
@@ -32,7 +32,7 @@ namespace GridFramework
         public void GenerateItems()
         {
             Vector2 newItemPosition;
-            Item newItem;
+            ItemType newItem;
             for (int row = 0; row < Rows; row++)
             {
                 for(int column = 0; column < Columns; column++)
@@ -46,14 +46,14 @@ namespace GridFramework
             }
         }
 
-        public Item GetItemByRowColumn(int row, int column)
+        public ItemType GetItemByRowColumn(int row, int column)
         {
             if (row < 0 || row >= Rows || column < 0 || column >= Columns)
                 return NULL_ITEM;
             return items[GetPositionFromRowColumn(row, column)];
         }
 
-        public void SwapItems(Item firstItem, Item secondItem)
+        public void SwapItems(ItemType firstItem, ItemType secondItem)
         {
             int firstItemRow = firstItem.Row;
             int firstItemColumn = firstItem.Column;

@@ -11,7 +11,7 @@ namespace Math3Game.View
 {
     public class MatchScanner : MonoBehaviour, MatchScannerTrigger
     {
-        private GameGrid grid;
+        private GameGrid<Gem> grid;
         private SwappingInputSwitch swappingInputSwitch;
         private BoardUpdater boardUpdater;
         private MatchSoundController matchSoundController;
@@ -22,7 +22,7 @@ namespace Math3Game.View
 
         [Inject]
         private void Construct(
-            GameGrid grid, 
+            GameGrid<Gem> grid, 
             SwappingInputSwitch swappingInputSwitch, 
             BoardUpdater boardUpdater, 
             MatchSoundController matchSoundController)

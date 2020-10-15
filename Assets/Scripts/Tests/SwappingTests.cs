@@ -17,9 +17,9 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemAbove = CreateItem(expectedSelectedItemPosition);
-            Item selectedItem = CreateItem(selectedItemInitialPosition);
-            ItemSearcher itemSearcher = CreateUpMockItemSearcher(() => itemAbove);
+            Gem itemAbove = CreateGem(expectedSelectedItemPosition);
+            Gem selectedItem = CreateGem(selectedItemInitialPosition);
+            ItemSearcher<Gem> itemSearcher = CreateUpMockItemSearcher(() => itemAbove);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -34,9 +34,9 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemOnTheRight = CreateItem(expectedSelectedItemPosition);
-            Item selectedItem = CreateItem(selectedItemInitialPosition);
-            ItemSearcher itemSearcher = CreateRightMockItemSearcher(() => itemOnTheRight);
+            Gem itemOnTheRight = CreateGem(expectedSelectedItemPosition);
+            Gem selectedItem = CreateGem(selectedItemInitialPosition);
+            ItemSearcher<Gem> itemSearcher = CreateRightMockItemSearcher(() => itemOnTheRight);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -51,9 +51,9 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemDown = CreateItem(expectedSelectedItemPosition);
-            Item selectedItem = CreateItem(selectedItemInitialPosition);
-            ItemSearcher itemSearcher = CreateDownMockItemSearcher(() => itemDown);
+            Gem itemDown = CreateGem(expectedSelectedItemPosition);
+            Gem selectedItem = CreateGem(selectedItemInitialPosition);
+            ItemSearcher<Gem> itemSearcher = CreateDownMockItemSearcher(() => itemDown);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -68,9 +68,9 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemLeft = CreateItem(expectedSelectedItemPosition);
-            Item selectedItem = CreateItem(selectedItemInitialPosition);
-            ItemSearcher itemSearcher = CreateLeftMockItemSearcher(() => itemLeft);
+            Gem itemLeft = CreateGem(expectedSelectedItemPosition);
+            Gem selectedItem = CreateGem(selectedItemInitialPosition);
+            ItemSearcher<Gem> itemSearcher = CreateLeftMockItemSearcher(() => itemLeft);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -86,9 +86,9 @@ namespace Tests.Unit
             Vector2 initialItemAbovePosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
             Vector2 expectedSelectedItemPosition = selectedItemInitialPosition;            
-            Item itemAbove = CreateItem(initialItemAbovePosition);
-            Item selectedItem = CreateItem(selectedItemInitialPosition);
-            ItemSearcher itemSearcher = CreateUpMockItemSearcher(() => itemAbove);
+            Gem itemAbove = CreateGem(initialItemAbovePosition);
+            Gem selectedItem = CreateGem(selectedItemInitialPosition);
+            ItemSearcher<Gem> itemSearcher = CreateUpMockItemSearcher(() => itemAbove);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -108,10 +108,10 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemLeft = CreateItem(expectedSelectedItemPosition, "apple");
-            Item selectedItem = CreateItem(selectedItemInitialPosition, "banana");
+            Gem itemLeft = CreateGem(expectedSelectedItemPosition, "apple");
+            Gem selectedItem = CreateGem(selectedItemInitialPosition, "banana");
             string neighborType = "banana";
-            ItemSearcher itemSearcher = CreateLeftMockItemSearcher(() => itemLeft, neighborType);
+            ItemSearcher<Gem> itemSearcher = CreateLeftMockItemSearcher(() => itemLeft, neighborType);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -130,10 +130,10 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemLeft = CreateItem(expectedSelectedItemPosition, "apple");
-            Item selectedItem = CreateItem(selectedItemInitialPosition, "banana");
+            Gem itemLeft = CreateGem(expectedSelectedItemPosition, "apple");
+            Gem selectedItem = CreateGem(selectedItemInitialPosition, "banana");
             string neighborType = "apple";
-            ItemSearcher itemSearcher = CreateLeftMockItemSearcher(() => new NullItem(), neighborType);
+            ItemSearcher<Gem> itemSearcher = CreateLeftMockItemSearcher(() => new NullGem(), neighborType);
             Swapper swapper = CreateSwapper(itemSearcher);
             swapper.Initialize(selectedItem);
 
@@ -152,10 +152,10 @@ namespace Tests.Unit
         {
             Vector2 expectedSelectedItemPosition = Vector2.up;
             Vector2 selectedItemInitialPosition = Vector2.zero;
-            Item itemLeft = CreateItem(expectedSelectedItemPosition, "apple");
-            Item selectedItem = CreateItem(selectedItemInitialPosition, "banana");
+            Gem itemLeft = CreateGem(expectedSelectedItemPosition, "apple");
+            Gem selectedItem = CreateGem(selectedItemInitialPosition, "banana");
             string neighborType = "banana";
-            ItemSearcher itemSearcher = CreateLeftMockItemSearcher(() => itemLeft, neighborType);
+            ItemSearcher<Gem> itemSearcher = CreateLeftMockItemSearcher(() => itemLeft, neighborType);
             MatchScannerTrigger matchScannerTrigger = CreateMatchScannerTrigger();
             Swapper swapper = CreateSwapper(itemSearcher, matchScannerTrigger);
             swapper.Initialize(selectedItem);
@@ -172,66 +172,66 @@ namespace Tests.Unit
             return new MockMatchScannerTrigger();
         }
 
-        private Item CreateItem(Vector2 initialPosition, string gemType = "")
+        private Gem CreateGem(Vector2 initialPosition, string gemType = "")
         {
             return new MockItem(initialPosition, gemType);
         }
 
-        private Swapper CreateSwapper(ItemSearcher itemSearcher)
+        private Swapper CreateSwapper(ItemSearcher<Gem> itemSearcher)
         {
             return new Swapper(itemSearcher, new MockMatchScannerTrigger(), new MockSwapSoundController());
         }
-        private Swapper CreateSwapper(ItemSearcher itemSearcher, MatchScannerTrigger matchScannerTrigger)
+        private Swapper CreateSwapper(ItemSearcher<Gem> itemSearcher, MatchScannerTrigger matchScannerTrigger)
         {
             return new Swapper(itemSearcher, matchScannerTrigger, new MockSwapSoundController());
         }
 
-        private ItemSearcher CreateRightMockItemSearcher(Func<Item> getItemRight, string neighborType = "")
+        private ItemSearcher<Gem> CreateRightMockItemSearcher(Func<Gem> getItemRight, string neighborType = "")
         {
             return CreateMockItemSearcher(
                         getItemRight,
-                        () => new NullItem(),
-                        () => new NullItem(),
-                        () => new NullItem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
                         neighborType);
         }
 
-        private ItemSearcher CreateLeftMockItemSearcher(Func<Item> getItemLeft, string neighborType = "")
+        private ItemSearcher<Gem> CreateLeftMockItemSearcher(Func<Gem> getItemLeft, string neighborType = "")
         {
             return CreateMockItemSearcher(
-                        () => new NullItem(),
+                        () => new NullGem(),
                         getItemLeft,
-                        () => new NullItem(),
-                        () => new NullItem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
                         neighborType);
         }
 
-        private ItemSearcher CreateUpMockItemSearcher(Func<Item> getItemUp, string neighborType = "")
+        private ItemSearcher<Gem> CreateUpMockItemSearcher(Func<Gem> getItemUp, string neighborType = "")
         {
             return CreateMockItemSearcher(
-                        () => new NullItem(),
-                        () => new NullItem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
                         getItemUp,
-                        () => new NullItem(),
+                        () => new NullGem(),
                         neighborType);
         }
 
-        private ItemSearcher CreateDownMockItemSearcher(Func<Item> getItemDown, string neighborType = "")
+        private ItemSearcher<Gem> CreateDownMockItemSearcher(Func<Gem> getItemDown, string neighborType = "")
         {
             return CreateMockItemSearcher(
-                        () => new NullItem(),
-                        () => new NullItem(),
-                        () => new NullItem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
+                        () => new NullGem(),
                         getItemDown,
                         neighborType);
         }
 
-        private ItemSearcher CreateMockItemSearcher
+        private ItemSearcher<Gem> CreateMockItemSearcher
             (
-                Func<Item> getItemRight, 
-                Func<Item> getItemLeft, 
-                Func<Item> getItemUp, 
-                Func<Item> getItemDown, 
+                Func<Gem> getItemRight, 
+                Func<Gem> getItemLeft, 
+                Func<Gem> getItemUp, 
+                Func<Gem> getItemDown, 
                 string neighborType = "")
         {
             return new MockItemSearcher(getItemRight, getItemLeft, getItemUp, getItemDown, neighborType);

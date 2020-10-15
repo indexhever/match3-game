@@ -6,12 +6,12 @@ using UnityEngine;
 
 namespace Math3Game.Controller
 {
-    public interface ItemSearcher
+    public interface ItemSearcher<ItemType> where ItemType : Item
     {
-        Item GetItemAbove(Item givenItem);
-        Item GetItemUnder(Item givenItem);
-        Item GetItemRight(Item givenItem);
-        Item GetItemLeft(Item givenItem);
-        void SwapItems(Item selectedItem, Item itemSwapped);
+        ItemType GetItemAbove(ItemType givenItem);
+        ItemType GetItemUnder(ItemType givenItem);
+        ItemType GetItemRight(ItemType givenItem);
+        ItemType GetItemLeft(ItemType givenItem);
+        void SwapItems(ItemType selectedItem, ItemType itemSwapped);
     }
 }
