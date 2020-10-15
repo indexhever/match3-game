@@ -22,13 +22,16 @@ namespace Math3Game
         public override void InstallBindings()
         {
             Container.Bind<BackgroundMusicController>()
-                     .FromInstance(this);
+                     .FromInstance(this)
+                     .AsSingle();
 
             Container.Bind<MatchSoundController>()
-                     .FromInstance(this);
+                     .FromInstance(this)
+                     .AsSingle();
 
             Container.Bind<SwapSoundController>()
-                     .FromInstance(this);
+                     .FromInstance(this)
+                     .AsSingle();
         }
 
         private new void Start()
