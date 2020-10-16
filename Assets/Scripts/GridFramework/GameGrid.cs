@@ -46,6 +46,11 @@ namespace GridFramework
             }
         }
 
+        public void SetItemAtRowAndColum(ItemType item, int row, int column)
+        {
+            items[GetPositionFromRowColumn(row, column)] = item;
+        }
+
         public ItemType GetItemByRowColumn(int row, int column)
         {
             if (row < 0 || row >= Rows || column < 0 || column >= Columns)

@@ -33,7 +33,12 @@ namespace Math3Game.Controller
         public void Stop()
         {
             OnUpdatingBoard?.Invoke();
-            //OnUpdateComplete?.Invoke();
+            
+        }
+
+        public void UpdateComplete()
+        {
+            OnUpdateComplete?.Invoke();
         }
 
         public void RequireGemForColumn(int column)

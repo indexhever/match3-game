@@ -65,7 +65,6 @@ namespace Math3Game.View
         public void EnterSlot(Slot slot)
         {
             this.currentSlot = slot;
-            Debug.Log("I'm in slot");
         }
 
         public virtual void Dispose()

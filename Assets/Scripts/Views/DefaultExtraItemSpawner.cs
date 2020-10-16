@@ -11,22 +11,32 @@ namespace Math3Game.View
 {
     public class DefaultExtraItemSpawner : MonoBehaviour, ExtraItemSpawner
     {
-        private GameGrid<Gem> grid;
+        private GameGrid<Gem> gemGrid;
+        private GameGrid<Slot> slotGrid;
         private ExtraGemFactory extraGemFactory;
+        private ExtraItemsEntering extraItemsEntering;
         private int[] amountExtraItemsToCreatePerColumn;
         private BoardUpdater boardUpdater;
         private float previousYForSpawning;
+        private int amountExtraItemsCreated;
 
         [SerializeField]
-        private float amountSecondsWaitToSpawnAnother = .3f;
+        private float amountSecondsWaitToSpawnAnother = .3f;        
 
         [Inject]
-        private void Construct(GameGrid<Gem> grid, ExtraGemFactory extraGemFactory, BoardUpdater boardUpdater)
+        private void Construct(
+            GameGrid<Gem> gemGrid, 
+            GameGrid<Slot> slotGrid,
+            ExtraGemFactory extraGemFactory, 
+            BoardUpdater boardUpdater,
+            ExtraItemsEntering extraItemsEntering)
         {
-            this.grid = grid;
+            this.gemGrid = gemGrid;
+            this.slotGrid = slotGrid;
             this.extraGemFactory = extraGemFactory;
             this.boardUpdater = boardUpdater;
-            amountExtraItemsToCreatePerColumn = new int[grid.Columns];
+            this.extraItemsEntering = extraItemsEntering;
+            amountExtraItemsToCreatePerColumn = new int[gemGrid.Columns];
         }
 
         public void RequireGemPerColumn(int column)
@@ -37,33 +47,87 @@ namespace Math3Game.View
         public void StartSpawning()
         {
             StartCoroutine(SpawnItemPerColumnCoroutine());
-        }
+        }        
 
         private IEnumerator SpawnItemPerColumnCoroutine()
         {
-            for(int column = 0; column < amountExtraItemsToCreatePerColumn.Length; column++)
+            Stack<Gem> extraGemStack = new Stack<Gem>();
+            bool hasEmptySlotInCurrentColumn = false;
+            for (int column = 0; column < amountExtraItemsToCreatePerColumn.Length; column++)
             {
-                while(amountExtraItemsToCreatePerColumn[column] > 0)
+                while (amountExtraItemsToCreatePerColumn[column] > 0)
                 {
-                    SpawnItemAtColumn(column);
-                    amountExtraItemsToCreatePerColumn[column]--;                  
+                    hasEmptySlotInCurrentColumn = true;
+                    extraGemStack.Push(SpawnItemAtColumn(column));
+                    amountExtraItemsToCreatePerColumn[column]--;
+                    amountExtraItemsCreated++;
                 }
-                yield return null;
+                if (!hasEmptySlotInCurrentColumn)
+                    continue;
+                yield return SetupStackOfItemsForColumn(column, extraGemStack);
                 previousYForSpawning = 0;
+                hasEmptySlotInCurrentColumn = false;
             }
+            TellAmountItemsAreGoingToEnterGame();
             boardUpdater.Stop();
         }
 
-        private void SpawnItemAtColumn(int column)
+        private void TellAmountItemsAreGoingToEnterGame()
+        {
+            extraItemsEntering.SetAmountItemsToEnter(amountExtraItemsCreated);
+            amountExtraItemsCreated = 0;
+        }
+
+        /// <summary>
+        /// Setup the stack of elements for a column.
+        /// </summary>
+        /// <param name="column"></param>
+        private IEnumerator SetupStackOfItemsForColumn(int column, Stack<Gem> extraGems)
+        {
+            Slot currentSlot;
+            Stack<Gem> gemsInNonEmptySlots = new Stack<Gem>();
+
+            // Fill extra gems into gemsInNonEmptySlots
+            while (extraGems.Count > 0)
+            {
+                gemsInNonEmptySlots.Push(extraGems.Pop());
+            }
+
+            // Fill empty slots and gemsInNonEmptySlots
+            for (int row = 0; row < slotGrid.Rows; row++)
+            {
+                currentSlot = slotGrid.GetItemByRowColumn(row, column);
+                if (!currentSlot.IsEmpty)
+                {
+                    gemsInNonEmptySlots.Push(currentSlot.Gem);
+                }
+
+                yield return null;
+            }            
+
+            // setup expected gem for each slot from column in descent order
+            Gem currentGem;
+            for (int row = slotGrid.Rows - 1; row > 0; row--)
+            {
+                currentSlot = slotGrid.GetItemByRowColumn(row, column);
+                currentGem = gemsInNonEmptySlots.Pop();
+                currentSlot.SetExpectedGem(currentGem);
+                yield return null;
+            }
+        }
+
+        private Gem SpawnItemAtColumn(int column)
         {
             Vector2 newPosition = GetPositionForColumn(column);
             Gem newGem = extraGemFactory.Create(newPosition);
             newGem.OnBoardUpdate();
+
+            return newGem;
         }
 
         private Vector2 GetPositionForColumn(int column)
         {
-            Vector2 firstItemPositionOfGridColumn = grid.GetItemByRowColumn(0, column).Position;
+            Vector2 firstItemPositionOfGridColumn = gemGrid.GetItemByRowColumn(0, column).Position;
             float newX = firstItemPositionOfGridColumn.x;
             float newY = extraGemFactory.MeasuresInUnit.y + firstItemPositionOfGridColumn.y + previousYForSpawning;
             previousYForSpawning += extraGemFactory.MeasuresInUnit.y;

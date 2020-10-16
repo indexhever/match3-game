@@ -69,7 +69,10 @@ namespace Math3Game.View
                 yield return null;
             }
 
-            yield return DisposeItems();
+            if (thereWasAMatch)
+            {
+                yield return DisposeItems();
+            }
             yield return CleanAllStacks();
             OnScanningEnd();
         }
@@ -103,6 +106,7 @@ namespace Math3Game.View
         {
             if (IsThereAMatchInStack(itemMatchedStack))
             {
+                thereWasAMatch = true;
                 SetDisposeItemsFromStack(itemMatchedStack);
             }
             else
@@ -122,7 +126,7 @@ namespace Math3Game.View
         }
 
         private IEnumerator DisposeItems()
-        {
+        {            
             matchSoundController.PlayMatchSound();
             foreach (Item itemToDispose in itemsToBeDisposed)
             {
@@ -134,7 +138,6 @@ namespace Math3Game.View
 
         private void SetDisposeItemsFromStack(Stack<Item> itemMatchedStack)
         {
-            thereWasAMatch = true;
             int amountOfItemsToDespawn = itemMatchedStack.Count;
             Item currentItem;
             for (int i = 0; i < amountOfItemsToDespawn; i++)
@@ -171,7 +174,7 @@ namespace Math3Game.View
 
         public void OnBoardUpdateComplete()
         {
-            //Scan();
+            Scan();
         }
     }
 }
