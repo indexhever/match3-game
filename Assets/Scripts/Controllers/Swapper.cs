@@ -56,6 +56,9 @@ namespace Math3Game.Controller
 
         private void Swap()
         {
+            if (itemSwapped.Row == -1)
+                return;
+
             swapSoundController.PlaySwapSound();
             itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
@@ -87,56 +90,131 @@ namespace Math3Game.Controller
 
             matchScannerTrigger.Scan();
         }
-
+        
         private bool CanSwap()
         {
-            return CanSwapRight() || CanSwapLeft() || CanSwapUp() || CanSwapDown();
+            return HasHorizontalMatch() || HasVerticalMatch();
         }
 
-        private bool CanSwapRight()
+        private bool HasHorizontalMatch()
         {
-            return CanSwapRoutine(itemSearcher.GetItemRight);
+            return IsInHorizontalMiddle() || IsInHorizontalBorder();
         }
 
-        private bool CanSwapLeft()
+        private bool IsInHorizontalMiddle()
         {
-            return CanSwapRoutine(itemSearcher.GetItemLeft);
+            return IsItemInHorizontalMiddleOfEqualItem(selectedItem) || IsItemInHorizontalMiddleOfEqualItem(itemSwapped);
         }
 
-        private bool CanSwapUp()
+        private bool IsItemInHorizontalMiddleOfEqualItem(Gem gem)
         {
-            return CanSwapRoutine(itemSearcher.GetItemAbove);
+            return (itemSearcher.GetItemLeft(gem).Equals(gem)
+                            && itemSearcher.GetItemRight(gem).Equals(gem));
         }
 
-        private bool CanSwapDown()
+        private bool IsInHorizontalBorder()
         {
-            return CanSwapRoutine(itemSearcher.GetItemUnder);
+            return IsMatchingToTheRight() || IsMatchingToTheLeft();
         }
 
-        private bool CanSwapRoutine(Func<Gem, Gem> getNeighborOf)
+        private bool IsMatchingToTheLeft()
         {
-            bool isTherAMatchInOneSide = true;
-            bool isTherAMatchInOtherSide = true;
-            Gem foundItemSwappedNeighbor = itemSwapped;
-            Gem foundSelectedItemNeighbor = selectedItem;
+            return CheckMatchToTheLeftOf(selectedItem) || CheckMatchToTheLeftOf(itemSwapped);
+        }
+
+        private bool IsMatchingToTheRight()
+        {
+            return CheckMatchToTheRightOf(selectedItem) || CheckMatchToTheRightOf(itemSwapped);
+        }
+
+        private bool CheckMatchToTheRightOf(Gem gemToCheckEquality)
+        {
+            Gem currentGem = gemToCheckEquality;
+            bool hasMatch = true;
             for (int i = 0; i < 2; i++)
             {
-                // check if new neighbor of itemSwapped match its type
-                foundItemSwappedNeighbor = getNeighborOf(foundItemSwappedNeighbor);
-                if (!foundItemSwappedNeighbor.Equals(itemSwapped))
-                {
-                    isTherAMatchInOneSide = false;
-                }
+                currentGem = itemSearcher.GetItemRight(currentGem);
 
-                // check if new neighbor of selectedItem match its type
-                foundSelectedItemNeighbor = getNeighborOf(foundSelectedItemNeighbor);
-                if (!foundSelectedItemNeighbor.Equals(selectedItem))
+                if (!currentGem.Equals(gemToCheckEquality))
                 {
-                    isTherAMatchInOtherSide = false;
+                    hasMatch = false;
+                    break;
                 }
             }
+            return hasMatch;
+        }
 
-            return isTherAMatchInOneSide || isTherAMatchInOtherSide;
+        private bool CheckMatchToTheLeftOf(Gem gemToCheckEquality)
+        {
+            Gem currentGem = gemToCheckEquality;
+            bool hasMatch = true;
+            for (int i = 0; i < 2; i++)
+            {
+                currentGem = itemSearcher.GetItemLeft(currentGem);
+
+                if (!currentGem.Equals(gemToCheckEquality))
+                {
+                    hasMatch = false;
+                    break;
+                }
+            }
+            return hasMatch;
+        }
+
+        private bool HasVerticalMatch()
+        {
+            return IsInVerticalMiddle() || IsInVerticalBorder();
+        }
+
+        private bool IsInVerticalMiddle()
+        {
+            return IsItemInVerticalMiddleOfEqualItem(selectedItem) || IsItemInVerticalMiddleOfEqualItem(itemSwapped);
+        }
+
+        private bool IsItemInVerticalMiddleOfEqualItem(Gem gem)
+        {
+            return (itemSearcher.GetItemAbove(gem).Equals(gem)
+                            && itemSearcher.GetItemUnder(gem).Equals(gem));
+        }
+
+        private bool IsInVerticalBorder()
+        {
+            return CheckMatchAboveOf(selectedItem) || CheckMatchUnderOf(selectedItem)
+                || CheckMatchAboveOf(itemSwapped) || CheckMatchUnderOf(itemSwapped);
+        }
+
+        private bool CheckMatchAboveOf(Gem gemToCheckEquality)
+        {
+            Gem currentGem = gemToCheckEquality;
+            bool hasMatch = true;
+            for (int i = 0; i < 2; i++)
+            {
+                currentGem = itemSearcher.GetItemAbove(currentGem);
+
+                if (!currentGem.Equals(gemToCheckEquality))
+                {
+                    hasMatch = false;
+                    break;
+                }
+            }
+            return hasMatch;
+        }
+
+        private bool CheckMatchUnderOf(Gem gemToCheckEquality)
+        {
+            Gem currentGem = gemToCheckEquality;
+            bool hasMatch = true;
+            for (int i = 0; i < 2; i++)
+            {
+                currentGem = itemSearcher.GetItemUnder(currentGem);
+
+                if (!currentGem.Equals(gemToCheckEquality))
+                {
+                    hasMatch = false;
+                    break;
+                }
+            }
+            return hasMatch;
         }
     }
 }
