@@ -72,6 +72,8 @@ namespace Math3Game.Controller
         {
             if (selectedItem == null || itemSwapped == null)
                 return;
+            if (itemSwapped.Row == -1)
+                return;
             if (selectedItem.Position == itemInitialPosition && itemSwapped.Position == itemSwappedInitialPosition)
                 return;
 
@@ -93,6 +95,9 @@ namespace Math3Game.Controller
         
         private bool CanSwap()
         {
+            if (itemSwapped == null || itemSwapped.Row == -1)
+                return false;
+
             return HasHorizontalMatch() || HasVerticalMatch();
         }
 
