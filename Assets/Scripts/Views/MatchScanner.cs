@@ -63,9 +63,11 @@ namespace Math3Game.View
                     currentItem = grid.GetItemByRowColumn(row, column);
                     ScanItemStackWithItem(rowItemMatcheds, currentItem);
                     ScanItemStackWithItem(columnItemMatcheds[column], currentItem);
-
+                    if (row == grid.Rows - 1)
+                        CleanStack(columnItemMatcheds[column]);
                     yield return null;
                 }
+                CleanStack(rowItemMatcheds);
                 yield return null;
             }
 
@@ -79,10 +81,10 @@ namespace Math3Game.View
 
         private void OnScanningEnd()
         {
-            if (thereWasAMatch)
-                RunGridUpdater();
-            else
-                ReturnSwappingInput();
+            //if (thereWasAMatch)
+            //    RunGridUpdater();
+            //else
+            //    ReturnSwappingInput();
         }
 
         private void ScanItemStackWithItem(Stack<Item> previousMatchingItems, Item newItem)
