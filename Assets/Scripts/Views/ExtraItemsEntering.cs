@@ -24,6 +24,10 @@ namespace Math3Game.View
         private void OnTriggerExit2D(Collider2D collision)
         {
             amountThatEnteredGame++;
+            Debug.Log($"amountExtraItemsCreated == amountThatEnteredGame: {amountExtraItemsCreated == amountThatEnteredGame}");
+            Debug.Log($"amountExtraItemsCreated: {amountExtraItemsCreated}");
+            Debug.Log($"amountThatEnteredGame: {amountThatEnteredGame}");
+
             if (amountExtraItemsCreated == amountThatEnteredGame)
                 StartPlayingAgain();
         }
@@ -31,6 +35,7 @@ namespace Math3Game.View
         private void StartPlayingAgain()
         {
             Debug.Log($"Start playing again.");
+            amountThatEnteredGame = 0;
             StartCoroutine(StartPlayingAgainCoroutine());
         }
 

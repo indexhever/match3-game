@@ -11,6 +11,8 @@ namespace Math3Game.View
 {
     public class DefaultExtraItemSpawner : MonoBehaviour, ExtraItemSpawner
     {
+        private const float OFFSET = 3f;
+
         private GameGrid<Gem> gemGrid;
         private GameGrid<Slot> slotGrid;
         private ExtraGemFactory extraGemFactory;
@@ -128,6 +130,7 @@ namespace Math3Game.View
         private Vector2 GetPositionForColumn(int column)
         {
             Vector2 firstItemPositionOfGridColumn = gemGrid.GetItemByRowColumn(0, column).Position;
+            firstItemPositionOfGridColumn.y += OFFSET;
             float newX = firstItemPositionOfGridColumn.x;
             float newY = extraGemFactory.MeasuresInUnit.y + firstItemPositionOfGridColumn.y + previousYForSpawning;
             previousYForSpawning += extraGemFactory.MeasuresInUnit.y;
