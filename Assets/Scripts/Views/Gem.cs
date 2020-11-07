@@ -10,6 +10,10 @@ namespace Math3Game.View
     public interface Gem : Item
     {
         void EnterSlot(Slot slot);
+
+        // TODO: refactor to move inside Position accessable
+        void MoveToPosition(Vector2 newPosition);
+
         void OnBoardUpdate();
     }
 }

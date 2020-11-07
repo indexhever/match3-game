@@ -114,6 +114,7 @@ namespace Math3Game.View
                 currentSlot = slotGrid.GetItemByRowColumn(row, column);
                 currentGem = gemsInNonEmptySlots.Pop();
                 currentSlot.SetExpectedGem(currentGem);
+                currentGem.MoveToPosition(currentSlot.Position);                
                 yield return null;
             }
         }

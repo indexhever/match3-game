@@ -49,6 +49,11 @@ namespace Tests
             return (other as MockItem).GemType == gemType;
         }
 
+        public void MoveToPosition(Vector2 newPosition)
+        {
+            
+        }
+
         public void OnBoardUpdate()
         {
             

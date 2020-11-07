@@ -32,5 +32,10 @@ namespace Math3Game.View
         {
             
         }
+
+        public void MoveToPosition(Vector2 newPosition)
+        {
+            
+        }
     }
 }

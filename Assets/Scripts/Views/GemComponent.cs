@@ -17,6 +17,8 @@ namespace Math3Game.View
         private Rigidbody2D gemRigidbody;
         [SerializeField]
         private SpriteRenderer spriteRenderer;
+        [SerializeField]
+        private Mover mover;
 
         public virtual Vector2 Position
         {
@@ -54,12 +56,12 @@ namespace Math3Game.View
 
         public void OnBoardUpdate()
         {
-            gemRigidbody.isKinematic = false;
+            //gemRigidbody.isKinematic = false;
         }
 
         public void OnBoardComplete()
         {
-            gemRigidbody.isKinematic = true;
+            //gemRigidbody.isKinematic = true;
         }
 
         public void EnterSlot(Slot slot)
@@ -77,6 +79,11 @@ namespace Math3Game.View
             boardUpdater.UnsignOnUpdate(OnBoardUpdate);
             boardUpdater.UnSignOnUpdateComplete(OnBoardComplete);
             gameObject.SetActive(false);
+        }
+
+        public void MoveToPosition(Vector2 newPosition)
+        {
+            mover.MoveToPosition(newPosition);
         }
 
         public class Factory : PlaceholderFactory<Vector2, Sprite, GemComponent>
