@@ -11,7 +11,7 @@ namespace Math3Game.View
 {
     public class MatchScanner : MonoBehaviour, MatchScannerTrigger
     {
-        private GameGrid grid;
+        private GameGrid<Gem> grid;
         private SwappingInputSwitch swappingInputSwitch;
         private BoardUpdater boardUpdater;
         private MatchSoundController matchSoundController;
@@ -22,7 +22,7 @@ namespace Math3Game.View
 
         [Inject]
         private void Construct(
-            GameGrid grid, 
+            GameGrid<Gem> grid, 
             SwappingInputSwitch swappingInputSwitch, 
             BoardUpdater boardUpdater, 
             MatchSoundController matchSoundController)
@@ -63,13 +63,18 @@ namespace Math3Game.View
                     currentItem = grid.GetItemByRowColumn(row, column);
                     ScanItemStackWithItem(rowItemMatcheds, currentItem);
                     ScanItemStackWithItem(columnItemMatcheds[column], currentItem);
-
+                    if (row == grid.Rows - 1)
+                        CleanStack(columnItemMatcheds[column]);
                     yield return null;
                 }
+                CleanStack(rowItemMatcheds);
                 yield return null;
             }
 
-            yield return DisposeItems();
+            if (thereWasAMatch)
+            {
+                yield return DisposeItems();
+            }
             yield return CleanAllStacks();
             OnScanningEnd();
         }
@@ -103,6 +108,7 @@ namespace Math3Game.View
         {
             if (IsThereAMatchInStack(itemMatchedStack))
             {
+                thereWasAMatch = true;
                 SetDisposeItemsFromStack(itemMatchedStack);
             }
             else
@@ -122,7 +128,7 @@ namespace Math3Game.View
         }
 
         private IEnumerator DisposeItems()
-        {
+        {            
             matchSoundController.PlayMatchSound();
             foreach (Item itemToDispose in itemsToBeDisposed)
             {
@@ -134,7 +140,6 @@ namespace Math3Game.View
 
         private void SetDisposeItemsFromStack(Stack<Item> itemMatchedStack)
         {
-            thereWasAMatch = true;
             int amountOfItemsToDespawn = itemMatchedStack.Count;
             Item currentItem;
             for (int i = 0; i < amountOfItemsToDespawn; i++)
@@ -171,7 +176,7 @@ namespace Math3Game.View
 
         public void OnBoardUpdateComplete()
         {
-            //Scan();
+            Scan();
         }
     }
 }

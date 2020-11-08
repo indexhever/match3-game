@@ -1,4 +1,5 @@
 ﻿using Math3Game.Controller;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,6 +11,7 @@ namespace Math3Game.View
     {
         private BoardUpdater boardUpdater;
         private int amountThatEnteredGame;
+        private int amountExtraItemsCreated;
 
         [Inject]
         private void Construct(BoardUpdater boardUpdater)
@@ -17,10 +19,23 @@ namespace Math3Game.View
             this.boardUpdater = boardUpdater;
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
+        public void IncreaseAmountThatAlreadEntered()
         {
             amountThatEnteredGame++;
-            Debug.Log("AmountEnteredGame: " + amountThatEnteredGame);
+            
+            if (amountExtraItemsCreated == amountThatEnteredGame)
+                StartPlayingAgain();
+        }
+
+        private void StartPlayingAgain()
+        {
+            amountThatEnteredGame = 0;
+            boardUpdater.UpdateComplete();
+        }
+
+        public void SetAmountItemsToEnter(int amountExtraItemsCreated)
+        {
+            this.amountExtraItemsCreated = amountExtraItemsCreated;
         }
     }
 }

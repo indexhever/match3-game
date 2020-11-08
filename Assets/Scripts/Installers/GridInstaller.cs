@@ -30,18 +30,30 @@ namespace Math3Game.Installer
 
         public override void InstallBindings()
         {
-            Container.Bind<GameGrid>()
+            Container.Bind<GameGrid<Gem>>()
                      .AsSingle()
                      .WithArguments<int, int, Vector2, float>(rows, columns, gridTransform.position, offsetBetweenItens);
 
-            Container.BindFactory<Vector2, Sprite, Gem, Gem.Factory>()
+            Container.Bind<GameGrid<Slot>>()
+                     .AsSingle()
+                     .WithArguments<int, int, Vector2, float>(rows, columns, gridTransform.position, offsetBetweenItens);
+
+            Container.BindFactory<Vector2, Sprite, GemComponent, GemComponent.Factory>()
                      .FromComponentInNewPrefab(itemPrefab);
 
+            Container.BindFactory<Vector2, Slot, Slot.Factory>()
+                     .FromComponentInNewPrefab(slotPrefab);
+
             // TODO: abstract ItemFactory and ExtraGemFactory to remove duplication
-            Container.Bind<ItemFactory>()
+            Container.Bind<ItemFactory<Gem>>()
                      .To<DefaultItemFactory>()
                      .AsSingle()
                      .WithArguments<Vector2, Sprite[]>(CalculateItemMeasures(), gemImages);
+
+            Container.Bind<ItemFactory<Slot>>()
+                     .To<DefaultSlotFactory>()
+                     .AsSingle()
+                     .WithArguments<Vector2>(CalculateItemMeasures());
 
             Container.Bind<ExtraGemFactory>()
                      .AsSingle()
@@ -51,9 +63,6 @@ namespace Math3Game.Installer
                      .To<DefaultExtraItemSpawner>()
                      .FromInstance(defaultExtraItemSpawner);
 
-
-            Container.BindFactory<Vector2, Slot, Slot.Factory>()
-                     .FromComponentInNewPrefab(slotPrefab);
         }
 
         private Vector2 CalculateItemMeasures()

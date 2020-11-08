@@ -1,10 +1,12 @@
 ﻿using UnityEngine;
 using System.Collections;
 using GridFramework;
+using Math3Game.View;
+using System;
 
 namespace Tests
 {
-    public class MockItem : Item
+    public class MockItem : Gem
     {
         private Vector2 newItemPosition;
         private string gemType;
@@ -38,9 +40,25 @@ namespace Tests
             
         }
 
+        public void EnterSlot(Slot slot)
+        {
+            
+        }
+
         public bool Equals(Item other)
         {
             return (other as MockItem).GemType == gemType;
+        }
+
+
+        public void MoveToPosition(Vector2 newPosition, Action OnArrive = null)
+        {
+            
+        }
+
+        public void OnBoardUpdate()
+        {
+            
         }
     }
 }

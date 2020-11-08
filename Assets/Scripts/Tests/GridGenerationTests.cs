@@ -5,6 +5,7 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 using GridFramework;
+using Math3Game.View;
 
 namespace Tests.Unit.Grid
 {
@@ -15,9 +16,9 @@ namespace Tests.Unit.Grid
         {
             int rows = 3;
             int columns = 2;
-            ItemFactory itemFactory = CreateItemFactory(new Vector2(1, 2));
+            ItemFactory<Gem> itemFactory = CreateItemFactory(new Vector2(1, 2));
             Vector2 origin = Vector2.zero;
-            GameGrid grid = CreateGameGrid(rows, columns, itemFactory, origin, 1);
+            GameGrid<Gem> grid = CreateGameGrid(rows, columns, itemFactory, origin, 1);
 
             grid.GenerateItems();
 
@@ -30,9 +31,9 @@ namespace Tests.Unit.Grid
         {
             int rows = 3;
             int columns = 3;
-            ItemFactory itemFactory = CreateItemFactory(new Vector2(1, 2));
+            ItemFactory<Gem> itemFactory = CreateItemFactory(new Vector2(1, 2));
             Vector2 origin = Vector2.zero;
-            GameGrid grid = CreateGameGrid(rows, columns, itemFactory, origin, 1);
+            GameGrid<Gem> grid = CreateGameGrid(rows, columns, itemFactory, origin, 1);
             grid.GenerateItems();
 
             Item item = grid.GetItemByRowColumn(0, 0);
@@ -40,14 +41,14 @@ namespace Tests.Unit.Grid
             Assert.IsNotNull(item);
         }
 
-        private ItemFactory CreateItemFactory(Vector2 itemMeasuresInUnit)
+        private ItemFactory<Gem> CreateItemFactory(Vector2 itemMeasuresInUnit)
         {
             return new MockItemFactory(itemMeasuresInUnit);
         }
 
-        private GameGrid CreateGameGrid(int rows, int columns, ItemFactory itemFactory, Vector2 origin, float offsetBetweenItems)
+        private GameGrid<Gem> CreateGameGrid(int rows, int columns, ItemFactory<Gem> itemFactory, Vector2 origin, float offsetBetweenItems)
         {
-            return new GameGrid(rows, columns, itemFactory, origin, offsetBetweenItems);
+            return new GameGrid<Gem>(rows, columns, itemFactory, origin, offsetBetweenItems);
         }
     }
 }

@@ -7,10 +7,10 @@ namespace Math3Game.Controller
 {
     public class ExtraGemFactory
     {
-        private Gem.Factory gemFactory;
+        private GemComponent.Factory gemFactory;
         private Sprite[] gemImages;
 
-        public ExtraGemFactory(Gem.Factory gemFactory, Vector2 measuresInUnit, Sprite[] gemImages)
+        public ExtraGemFactory(GemComponent.Factory gemFactory, Vector2 measuresInUnit, Sprite[] gemImages)
         {
             this.gemFactory = gemFactory;
             MeasuresInUnit = measuresInUnit;

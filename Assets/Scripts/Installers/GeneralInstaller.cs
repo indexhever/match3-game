@@ -10,6 +10,8 @@ namespace Math3Game.Controller
     {
         [SerializeField]
         private Score scoreVisual;
+        [SerializeField]
+        private ExtraItemsEntering extraItemsEntering;
 
         public override void InstallBindings()
         {
@@ -22,6 +24,10 @@ namespace Math3Game.Controller
                      .AsSingle();
 
             Container.Bind<Scorer>()
+                     .AsSingle();
+
+            Container.Bind<ExtraItemsEntering>()
+                     .FromInstance(extraItemsEntering)
                      .AsSingle();
         }
     }

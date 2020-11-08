@@ -1,41 +1,41 @@
 ﻿using GridFramework;
+using Math3Game.View;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Math3Game.Controller
 {
-    public class GridBasedItemSearcher : ItemSearcher
+    public class GridBasedItemSearcher : ItemSearcher<Gem>
     {
-        private GameGrid grid;
+        private GameGrid<Gem> grid;
 
-        public GridBasedItemSearcher(GameGrid grid)
+        public GridBasedItemSearcher(GameGrid<Gem> grid)
         {
             this.grid = grid;
         }
 
-        public Item GetItemAbove(Item givenItem)
+        public Gem GetItemAbove(Gem givenItem)
         {
-            // TODO: return NulItem if row and column is out of bounds of grid
             return grid.GetItemByRowColumn(givenItem.Row - 1, givenItem.Column);
         }
 
-        public Item GetItemUnder(Item givenItem)
+        public Gem GetItemUnder(Gem givenItem)
         {
             return grid.GetItemByRowColumn(givenItem.Row + 1, givenItem.Column);
         }
 
-        public Item GetItemRight(Item givenItem)
+        public Gem GetItemRight(Gem givenItem)
         {
             return grid.GetItemByRowColumn(givenItem.Row, givenItem.Column + 1);
         }
 
-        public Item GetItemLeft(Item givenItem)
+        public Gem GetItemLeft(Gem givenItem)
         {
             return grid.GetItemByRowColumn(givenItem.Row, givenItem.Column - 1);
         }
 
-        public void SwapItems(Item firstItem, Item secondItem)
+        public void SwapItems(Gem firstItem, Gem secondItem)
         {
             grid.SwapItems(firstItem, secondItem);
         }

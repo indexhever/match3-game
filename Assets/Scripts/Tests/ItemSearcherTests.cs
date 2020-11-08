@@ -7,6 +7,7 @@ using Math3Game;
 using Math3Game.Controller;
 using GridFramework;
 using System;
+using Math3Game.View;
 
 namespace Tests.Unit
 {
@@ -15,13 +16,13 @@ namespace Tests.Unit
         [Test]
         public void GetItemAboveWhenThereIsOneAbove()
         {
-            GameGrid grid = CreateGrid(3, 3);
+            GameGrid<Gem> grid = CreateGrid(3, 3);
             grid.GenerateItems();
-            ItemSearcher itemSearcher = CreateItemSearcher(grid);
-            Item givenItem = grid.GetItemByRowColumn(1, 1);
-            Item expectedItemUnder = grid.GetItemByRowColumn(0, 1);
+            ItemSearcher<Gem> itemSearcher = CreateItemSearcher(grid);
+            Gem givenItem = grid.GetItemByRowColumn(1, 1);
+            Gem expectedItemUnder = grid.GetItemByRowColumn(0, 1);
 
-            Item itemAboveGivenOne = itemSearcher.GetItemAbove(givenItem);
+            Gem itemAboveGivenOne = itemSearcher.GetItemAbove(givenItem);
 
             Assert.IsNotNull(itemAboveGivenOne);
             Assert.AreEqual(expectedItemUnder, itemAboveGivenOne);
@@ -30,13 +31,13 @@ namespace Tests.Unit
         [Test]
         public void GetItemUnderWhenThereIsOneUnder()
         {
-            GameGrid grid = CreateGrid(3, 3);
+            GameGrid<Gem> grid = CreateGrid(3, 3);
             grid.GenerateItems();
-            ItemSearcher itemSearcher = CreateItemSearcher(grid);
-            Item givenItem = grid.GetItemByRowColumn(1, 1);
-            Item expectedItemAbove = grid.GetItemByRowColumn(2, 1);
+            ItemSearcher<Gem> itemSearcher = CreateItemSearcher(grid);
+            Gem givenItem = grid.GetItemByRowColumn(1, 1);
+            Gem expectedItemAbove = grid.GetItemByRowColumn(2, 1);
 
-            Item itemUnderGivenOne = itemSearcher.GetItemUnder(givenItem);
+            Gem itemUnderGivenOne = itemSearcher.GetItemUnder(givenItem);
 
             Assert.IsNotNull(itemUnderGivenOne);
             Assert.AreEqual(expectedItemAbove, itemUnderGivenOne);
@@ -45,13 +46,13 @@ namespace Tests.Unit
         [Test]
         public void GetItemRightWhenThereIsOneOnTheRight()
         {
-            GameGrid grid = CreateGrid(3, 3);
+            GameGrid<Gem> grid = CreateGrid(3, 3);
             grid.GenerateItems();
-            ItemSearcher itemSearcher = CreateItemSearcher(grid);
-            Item givenItem = grid.GetItemByRowColumn(1, 1);
-            Item expectedItemOnTheRight = grid.GetItemByRowColumn(1, 2);
+            ItemSearcher<Gem> itemSearcher = CreateItemSearcher(grid);
+            Gem givenItem = grid.GetItemByRowColumn(1, 1);
+            Gem expectedItemOnTheRight = grid.GetItemByRowColumn(1, 2);
 
-            Item itemOnTheRightOfGivenOne = itemSearcher.GetItemRight(givenItem);
+            Gem itemOnTheRightOfGivenOne = itemSearcher.GetItemRight(givenItem);
 
             Assert.IsNotNull(itemOnTheRightOfGivenOne);
             Assert.AreEqual(expectedItemOnTheRight, itemOnTheRightOfGivenOne);
@@ -60,21 +61,21 @@ namespace Tests.Unit
         [Test]
         public void GetItemLeftWhenThereIsOneOnTheLeft()
         {
-            GameGrid grid = CreateGrid(3, 3);
+            GameGrid<Gem> grid = CreateGrid(3, 3);
             grid.GenerateItems();
-            ItemSearcher itemSearcher = CreateItemSearcher(grid);
-            Item givenItem = grid.GetItemByRowColumn(1, 1);
-            Item expectedItemOnTheLeft = grid.GetItemByRowColumn(1, 0);
+            ItemSearcher<Gem> itemSearcher = CreateItemSearcher(grid);
+            Gem givenItem = grid.GetItemByRowColumn(1, 1);
+            Gem expectedItemOnTheLeft = grid.GetItemByRowColumn(1, 0);
 
-            Item itemOnTheLeftOfGivenOne = itemSearcher.GetItemLeft(givenItem);
+            Gem itemOnTheLeftOfGivenOne = itemSearcher.GetItemLeft(givenItem);
 
             Assert.IsNotNull(itemOnTheLeftOfGivenOne);
             Assert.AreEqual(expectedItemOnTheLeft, itemOnTheLeftOfGivenOne);
         }
 
-        private GameGrid CreateGrid(int rows, int columns)
+        private GameGrid<Gem> CreateGrid(int rows, int columns)
         {
-            return new GameGrid(
+            return new GameGrid<Gem>(
                 rows, 
                 columns, 
                 new MockItemFactory(new Vector2(2, 2)), 
@@ -82,7 +83,7 @@ namespace Tests.Unit
                 1);
         }
 
-        private ItemSearcher CreateItemSearcher(GameGrid grid)
+        private ItemSearcher<Gem> CreateItemSearcher(GameGrid<Gem> grid)
         {
             return new GridBasedItemSearcher(grid);
         }

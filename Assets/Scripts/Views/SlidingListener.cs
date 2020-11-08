@@ -12,7 +12,7 @@ namespace Math3Game.View
         private bool isSwapping;
 
         [SerializeField]
-        private Gem currentItem;
+        private GemComponent currentItem;
 
         [Inject]
         private void Construct(Swapper swapper)
@@ -59,11 +59,6 @@ namespace Math3Game.View
 
             isSwapping = true;
             swapper.SwapLeft();
-        }
-
-        public void OnInitialPosition()
-        {
-            swapper.Reset();
         }
 
         public void OnEnd()
