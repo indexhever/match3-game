@@ -9,8 +9,6 @@ namespace Math3Game.View
 {
     public class ExtraItemsEntering : MonoBehaviour
     {
-        private const float AMOUNT_SECONDS_WAIT = 1f;
-
         private BoardUpdater boardUpdater;
         private int amountThatEnteredGame;
         private int amountExtraItemsCreated;
@@ -21,15 +19,10 @@ namespace Math3Game.View
             this.boardUpdater = boardUpdater;
         }
 
-        //private void OnTriggerExit2D(Collider2D collision)
-        //{
-        //    IncreaseAmountThatAlreadEntered();
-        //}
-
         public void IncreaseAmountThatAlreadEntered()
         {
             amountThatEnteredGame++;
-            Debug.Log($"Amount entered: {amountThatEnteredGame}. AmountThatShouldEnter: {amountExtraItemsCreated}");
+            
             if (amountExtraItemsCreated == amountThatEnteredGame)
                 StartPlayingAgain();
         }
@@ -37,14 +30,6 @@ namespace Math3Game.View
         private void StartPlayingAgain()
         {
             amountThatEnteredGame = 0;
-            //StartCoroutine(StartPlayingAgainCoroutine());
-            boardUpdater.UpdateComplete();
-        }
-
-        private IEnumerator StartPlayingAgainCoroutine()
-        {
-            yield return new WaitForSeconds(AMOUNT_SECONDS_WAIT);
-
             boardUpdater.UpdateComplete();
         }
 
