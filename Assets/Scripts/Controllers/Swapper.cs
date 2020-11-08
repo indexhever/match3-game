@@ -11,17 +11,30 @@ namespace Math3Game.Controller
     {
         private ItemSearcher<Gem> itemSearcher;
         private MatchScannerTrigger matchScannerTrigger;
+        private SwapSoundController swapSoundController;
+        private GameGrid<Slot> slotGrid;
         private Gem selectedItem;
         private Gem itemSwapped;
         private Vector2 itemInitialPosition;
         private Vector2 itemSwappedInitialPosition;
-        private SwapSoundController swapSoundController;
+        private bool hasSelectedArrivedAtSlot;
+        private bool hasItemSwappedArrivedAtSlot;
+        private WaitUntil waitUntilBothGemsArriveAtDestination;
+        private Action<IEnumerator> startCoroutine;
 
-        public Swapper(ItemSearcher<Gem> itemSearcher, MatchScannerTrigger matchScannerTrigger, SwapSoundController swapSoundController)
+        public Swapper(
+            ItemSearcher<Gem> itemSearcher, 
+            MatchScannerTrigger matchScannerTrigger, 
+            SwapSoundController swapSoundController,
+            GameGrid<Slot> slotGrid,
+            Action<IEnumerator> startCoroutine)
         {
             this.itemSearcher = itemSearcher;
             this.matchScannerTrigger = matchScannerTrigger;
             this.swapSoundController = swapSoundController;
+            this.slotGrid = slotGrid;
+            this.startCoroutine = startCoroutine;
+            waitUntilBothGemsArriveAtDestination = new WaitUntil(() => hasItemSwappedArrivedAtSlot && hasSelectedArrivedAtSlot);
         }
 
         public void Initialize(Gem selectedItem)
@@ -62,10 +75,18 @@ namespace Math3Game.Controller
             swapSoundController.PlaySwapSound();
             itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
-            selectedItem.Position = itemSwapped.Position;
-            itemSwapped.Position = selectedItemCurrentPosition;
+            //selectedItem.Position = itemSwapped.Position;
+            //itemSwapped.Position = selectedItemCurrentPosition;
+            selectedItem.MoveToPosition(itemSwapped.Position, () => hasSelectedArrivedAtSlot = true);
+            itemSwapped.MoveToPosition(selectedItemCurrentPosition, () => hasItemSwappedArrivedAtSlot = true);
 
             itemSearcher.SwapItems(selectedItem, itemSwapped);
+
+            // set slot for both gems
+            //slotGrid.GetItemByRowColumn(selectedItem.Row, selectedItem.Column)
+            //        .ReceiveGem(selectedItem);
+            //slotGrid.GetItemByRowColumn(itemSwapped.Row, itemSwapped.Column)
+            //        .ReceiveGem(itemSwapped);
         }
 
         public void Reset()
@@ -77,9 +98,17 @@ namespace Math3Game.Controller
             if (selectedItem.Position == itemInitialPosition && itemSwapped.Position == itemSwappedInitialPosition)
                 return;
 
-            selectedItem.Position = itemInitialPosition;
-            itemSwapped.Position = itemSwappedInitialPosition;
+            //selectedItem.Position = itemInitialPosition;
+            //itemSwapped.Position = itemSwappedInitialPosition;
+            selectedItem.MoveToPosition(itemInitialPosition);
+            itemSwapped.MoveToPosition(itemSwappedInitialPosition);
             itemSearcher.SwapItems(selectedItem, itemSwapped);
+
+            // set slot for both gems
+            //slotGrid.GetItemByRowColumn(selectedItem.Row, selectedItem.Column)
+            //        .ReceiveGem(selectedItem);
+            //slotGrid.GetItemByRowColumn(itemSwapped.Row, itemSwapped.Column)
+            //        .ReceiveGem(itemSwapped);
         }
 
         public void CompleteSwap()
@@ -89,6 +118,13 @@ namespace Math3Game.Controller
                 Reset();
                 return;
             }
+
+            startCoroutine(StartScanning());
+        }
+
+        private IEnumerator StartScanning()
+        {
+            yield return waitUntilBothGemsArriveAtDestination;
 
             matchScannerTrigger.Scan();
         }

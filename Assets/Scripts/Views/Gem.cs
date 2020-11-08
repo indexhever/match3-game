@@ -1,5 +1,6 @@
 ﻿using GridFramework;
 using Math3Game.Controller;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,9 +12,6 @@ namespace Math3Game.View
     {
         void EnterSlot(Slot slot);
 
-        // TODO: refactor to move inside Position accessable
-        void MoveToPosition(Vector2 newPosition);
-
-        void OnBoardUpdate();
+        void MoveToPosition(Vector2 newPosition, Action OnArrive = null);
     }
 }

@@ -9,7 +9,7 @@ namespace Math3Game.View
 {
     public class ExtraItemsEntering : MonoBehaviour
     {
-        private const float AMOUNT_SECONDS_WAIT = 2f;
+        private const float AMOUNT_SECONDS_WAIT = 1f;
 
         private BoardUpdater boardUpdater;
         private int amountThatEnteredGame;
@@ -21,22 +21,24 @@ namespace Math3Game.View
             this.boardUpdater = boardUpdater;
         }
 
-        private void OnTriggerExit2D(Collider2D collision)
+        //private void OnTriggerExit2D(Collider2D collision)
+        //{
+        //    IncreaseAmountThatAlreadEntered();
+        //}
+
+        public void IncreaseAmountThatAlreadEntered()
         {
             amountThatEnteredGame++;
-            Debug.Log($"amountExtraItemsCreated == amountThatEnteredGame: {amountExtraItemsCreated == amountThatEnteredGame}");
-            Debug.Log($"amountExtraItemsCreated: {amountExtraItemsCreated}");
-            Debug.Log($"amountThatEnteredGame: {amountThatEnteredGame}");
-
+            Debug.Log($"Amount entered: {amountThatEnteredGame}. AmountThatShouldEnter: {amountExtraItemsCreated}");
             if (amountExtraItemsCreated == amountThatEnteredGame)
                 StartPlayingAgain();
         }
 
         private void StartPlayingAgain()
         {
-            Debug.Log($"Start playing again.");
             amountThatEnteredGame = 0;
-            StartCoroutine(StartPlayingAgainCoroutine());
+            //StartCoroutine(StartPlayingAgainCoroutine());
+            boardUpdater.UpdateComplete();
         }
 
         private IEnumerator StartPlayingAgainCoroutine()
@@ -49,7 +51,6 @@ namespace Math3Game.View
         public void SetAmountItemsToEnter(int amountExtraItemsCreated)
         {
             this.amountExtraItemsCreated = amountExtraItemsCreated;
-            Debug.Log("Amount intems should Enter: " + amountExtraItemsCreated);
         }
     }
 }

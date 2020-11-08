@@ -13,8 +13,6 @@ namespace Math3Game.View
         private Vector2 remainingPath;
         private Vector2 currentPosition;
         private Vector2 newPosition;
-        //[SerializeField]
-        //private bool canMove;
 
         [SerializeField]
         private Rigidbody2D objectRigidBody;
@@ -28,39 +26,13 @@ namespace Math3Game.View
             this.destinationPosition = destinationPosition;
             currentPosition = transform.localPosition;
             newPosition = transform.localPosition;
-            
-            //canMove = true;
 
             StartCoroutine(MoveCoroutine());
         }
 
-        //private void FixedUpdate()
-        //{
-        //    if (!canMove)
-        //        return;
-
-        //    Moving();
-        //}
-
-        //private void Moving()
-        //{
-        //    currentPosition = transform.localPosition;
-        //    if(Vector2.Distance(currentPosition, destinationPosition) > STOPPING_DISTANCE)
-        //    {
-        //        remainingPath = destinationPosition - currentPosition;
-        //        objectRigidBody.MovePosition(currentPosition + remainingPath * speed);
-        //    } else
-        //    {
-        //        objectRigidBody.MovePosition(destinationPosition);
-        //        canMove = false;
-
-        //        OnArrivedAtDestination?.Invoke();
-        //    }            
-        //}
-
         private IEnumerator MoveCoroutine()
         {
-            while (Vector2.Distance(currentPosition, destinationPosition) > STOPPING_DISTANCE)
+            while (HasNotArrivedAtDestination())
             {
                 currentPosition = transform.localPosition;
                 remainingPath = destinationPosition - currentPosition;
@@ -71,6 +43,11 @@ namespace Math3Game.View
             objectRigidBody.MovePosition(destinationPosition);
 
             OnArrivedAtDestination?.Invoke();
+        }
+
+        private bool HasNotArrivedAtDestination()
+        {
+            return Vector2.Distance(currentPosition, destinationPosition) > STOPPING_DISTANCE;
         }
     }
 }

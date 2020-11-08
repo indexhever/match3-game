@@ -25,6 +25,24 @@ namespace Math3Game.View
         {
             slotGrid.GenerateItems();
             gemGrid.GenerateItems();
+
+            StartCoroutine(SetGemForEachSlot());
+        }
+
+        private IEnumerator SetGemForEachSlot()
+        {
+            Slot currentSlot;
+            Gem currentGem;
+            for(int row = 0; row < slotGrid.Rows; row++)
+            {
+                for(int column = 0; column < slotGrid.Columns; column++)
+                {
+                    currentSlot = slotGrid.GetItemByRowColumn(row, column);
+                    currentGem = gemGrid.GetItemByRowColumn(row, column);
+                    currentSlot.ReceiveGem(currentGem);
+                    yield return null;
+                }
+            }
         }
     }
 }

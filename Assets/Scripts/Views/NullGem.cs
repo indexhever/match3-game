@@ -1,4 +1,5 @@
 ﻿using GridFramework;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,7 +34,7 @@ namespace Math3Game.View
             
         }
 
-        public void MoveToPosition(Vector2 newPosition)
+        public void MoveToPosition(Vector2 newPosition, Action OnArrive = null)
         {
             
         }

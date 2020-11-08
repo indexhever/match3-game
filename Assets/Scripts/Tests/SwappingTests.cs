@@ -179,11 +179,16 @@ namespace Tests.Unit
 
         private Swapper CreateSwapper(ItemSearcher<Gem> itemSearcher)
         {
-            return new Swapper(itemSearcher, new MockMatchScannerTrigger(), new MockSwapSoundController());
+            return new Swapper(
+                itemSearcher, 
+                new MockMatchScannerTrigger(), 
+                new MockSwapSoundController(),
+                null, 
+                (coroutine) => { });
         }
         private Swapper CreateSwapper(ItemSearcher<Gem> itemSearcher, MatchScannerTrigger matchScannerTrigger)
         {
-            return new Swapper(itemSearcher, matchScannerTrigger, new MockSwapSoundController());
+            return new Swapper(itemSearcher, matchScannerTrigger, new MockSwapSoundController(), null, null);
         }
 
         private ItemSearcher<Gem> CreateRightMockItemSearcher(Func<Gem> getItemRight, string neighborType = "")

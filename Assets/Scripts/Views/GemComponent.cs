@@ -1,5 +1,6 @@
 ﻿using GridFramework;
 using Math3Game.Controller;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,8 +11,8 @@ namespace Math3Game.View
     public class GemComponent : MonoBehaviour, Gem
     {
         private Slot currentSlot;
-        private BoardUpdater boardUpdater;
         private Scorer scorer;
+        private Action OnArriveAtSlotRoutine;
 
         [SerializeField]
         private Rigidbody2D gemRigidbody;
@@ -38,30 +39,17 @@ namespace Math3Game.View
         public virtual Sprite Image { get => spriteRenderer.sprite; }
 
         [Inject]
-        public void Construct(Vector2 initialPosition, Sprite gemImage, BoardUpdater boardUpdater, Scorer scorer)
+        public void Construct(Vector2 initialPosition, Sprite gemImage, Scorer scorer)
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
-            this.boardUpdater = boardUpdater;
             this.scorer = scorer;
-            boardUpdater.SignOnUpdate(OnBoardUpdate);
-            boardUpdater.SignOnUpdateComplete(OnBoardComplete);
         }
 
         public virtual bool Equals(Item other)
         {
 
             return other.Image == Image;
-        }
-
-        public void OnBoardUpdate()
-        {
-            //gemRigidbody.isKinematic = false;
-        }
-
-        public void OnBoardComplete()
-        {
-            //gemRigidbody.isKinematic = true;
         }
 
         public void EnterSlot(Slot slot)
@@ -76,14 +64,18 @@ namespace Math3Game.View
 
             scorer.IncreaseScore();
             currentSlot.CleanGem();
-            boardUpdater.UnsignOnUpdate(OnBoardUpdate);
-            boardUpdater.UnSignOnUpdateComplete(OnBoardComplete);
             gameObject.SetActive(false);
         }
 
-        public void MoveToPosition(Vector2 newPosition)
+        public void MoveToPosition(Vector2 newPosition, Action OnArrive = null)
         {
+            OnArriveAtSlotRoutine = OnArrive;
             mover.MoveToPosition(newPosition);
+        }
+
+        public void OnArriveAtSlot()
+        {
+            OnArriveAtSlotRoutine?.Invoke();
         }
 
         public class Factory : PlaceholderFactory<Vector2, Sprite, GemComponent>

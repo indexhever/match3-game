@@ -48,6 +48,8 @@ namespace GridFramework
 
         public void SetItemAtRowAndColum(ItemType item, int row, int column)
         {
+            item.Row = row;
+            item.Column = column;
             items[GetPositionFromRowColumn(row, column)] = item;
         }
 

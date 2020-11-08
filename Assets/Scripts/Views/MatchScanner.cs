@@ -176,8 +176,8 @@ namespace Math3Game.View
 
         public void OnBoardUpdateComplete()
         {
-            Scan();
-            //ReturnSwappingInput();
+            //Scan();
+            ReturnSwappingInput();
         }
     }
 }

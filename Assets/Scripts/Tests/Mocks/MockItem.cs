@@ -2,6 +2,7 @@
 using System.Collections;
 using GridFramework;
 using Math3Game.View;
+using System;
 
 namespace Tests
 {
@@ -49,7 +50,8 @@ namespace Tests
             return (other as MockItem).GemType == gemType;
         }
 
-        public void MoveToPosition(Vector2 newPosition)
+
+        public void MoveToPosition(Vector2 newPosition, Action OnArrive = null)
         {
             
         }

@@ -55,6 +55,7 @@ namespace Math3Game.View
         {
             Stack<Gem> extraGemStack = new Stack<Gem>();
             bool hasEmptySlotInCurrentColumn = false;
+            TellAmountItemsAreGoingToUpdate();
             for (int column = 0; column < amountExtraItemsToCreatePerColumn.Length; column++)
             {
                 while (amountExtraItemsToCreatePerColumn[column] > 0)
@@ -62,7 +63,7 @@ namespace Math3Game.View
                     hasEmptySlotInCurrentColumn = true;
                     extraGemStack.Push(SpawnItemAtColumn(column));
                     amountExtraItemsToCreatePerColumn[column]--;
-                    amountExtraItemsCreated++;
+                    //amountExtraItemsCreated++;
                 }
                 if (!hasEmptySlotInCurrentColumn)
                     continue;
@@ -70,12 +71,19 @@ namespace Math3Game.View
                 previousYForSpawning = 0;
                 hasEmptySlotInCurrentColumn = false;
             }
-            TellAmountItemsAreGoingToEnterGame();
+            
             boardUpdater.Stop();
         }
 
-        private void TellAmountItemsAreGoingToEnterGame()
+        private void TellAmountItemsAreGoingToUpdate()
         {
+            // each column that will receive new gems will be updated
+            for (int column = 0; column < amountExtraItemsToCreatePerColumn.Length; column++)
+            {
+                // we add the amount of rows per column to know the amount of updated in that column
+                if (amountExtraItemsToCreatePerColumn[column] > 0)
+                    amountExtraItemsCreated += slotGrid.Rows;
+            }
             extraItemsEntering.SetAmountItemsToEnter(amountExtraItemsCreated);
             amountExtraItemsCreated = 0;
         }
@@ -114,7 +122,10 @@ namespace Math3Game.View
                 currentSlot = slotGrid.GetItemByRowColumn(row, column);
                 currentGem = gemsInNonEmptySlots.Pop();
                 currentSlot.SetExpectedGem(currentGem);
-                currentGem.MoveToPosition(currentSlot.Position);                
+                currentGem.MoveToPosition(currentSlot.Position, () => {
+                    currentSlot.ReceiveGem(currentGem);
+                    extraItemsEntering.IncreaseAmountThatAlreadEntered();                    
+                });
                 yield return null;
             }
         }
@@ -123,7 +134,6 @@ namespace Math3Game.View
         {
             Vector2 newPosition = GetPositionForColumn(column);
             Gem newGem = extraGemFactory.Create(newPosition);
-            newGem.OnBoardUpdate();
 
             return newGem;
         }

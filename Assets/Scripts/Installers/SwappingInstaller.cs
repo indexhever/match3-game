@@ -1,5 +1,6 @@
 ﻿using Math3Game.Controller;
 using Math3Game.View;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -18,7 +19,8 @@ namespace Math3Game.Installer
         public override void InstallBindings()
         {
             Container.Bind<Swapper>()
-                     .AsTransient();
+                     .AsTransient()
+                     .WithArguments<Action<IEnumerator>>((coroutine) => StartCoroutine(coroutine));
 
             Container.Bind<ItemSearcher<Gem>>()
                      .To<GridBasedItemSearcher>()

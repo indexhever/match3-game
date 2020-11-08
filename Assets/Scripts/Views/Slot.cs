@@ -36,7 +36,12 @@ namespace Math3Game.View
 
         private void OnTriggerEnter2D(Collider2D collision)
         {
-            currentGem = collision.GetComponent<Gem>();
+            ReceiveGem(collision.GetComponent<Gem>());
+        }
+
+        public void ReceiveGem(Gem receivedGem)
+        {
+            currentGem = receivedGem;
             currentGem.EnterSlot(this);
 
             if (currentGem == expectedGem)
@@ -45,8 +50,6 @@ namespace Math3Game.View
 
         private void TellExpectedGemArrived()
         {
-            currentGem.Row = Row;
-            currentGem.Column = Column;
             gemGrid.SetItemAtRowAndColum(currentGem, Row, Column);
         }
 
