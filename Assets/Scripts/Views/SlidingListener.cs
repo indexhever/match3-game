@@ -61,11 +61,6 @@ namespace Math3Game.View
             swapper.SwapLeft();
         }
 
-        public void OnInitialPosition()
-        {
-            swapper.Reset();
-        }
-
         public void OnEnd()
         {
             isSwapping = false;

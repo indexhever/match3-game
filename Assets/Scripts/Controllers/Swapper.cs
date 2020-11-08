@@ -40,7 +40,6 @@ namespace Math3Game.Controller
         public void Initialize(Gem selectedItem)
         {
             this.selectedItem = selectedItem;
-            this.itemInitialPosition = selectedItem.Position;
         }
 
         public void SwapUp()
@@ -71,7 +70,7 @@ namespace Math3Game.Controller
         {
             if (itemSwapped.Row == -1)
                 return;
-
+            this.itemInitialPosition = selectedItem.Position;
             swapSoundController.PlaySwapSound();
             itemSwappedInitialPosition = itemSwapped.Position;
             Vector2 selectedItemCurrentPosition = selectedItem.Position;
