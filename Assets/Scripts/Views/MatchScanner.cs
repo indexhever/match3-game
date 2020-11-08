@@ -81,10 +81,10 @@ namespace Math3Game.View
 
         private void OnScanningEnd()
         {
-            //if (thereWasAMatch)
-            //    RunGridUpdater();
-            //else
-            //    ReturnSwappingInput();
+            if (thereWasAMatch)
+                RunGridUpdater();
+            else
+                ReturnSwappingInput();
         }
 
         private void ScanItemStackWithItem(Stack<Item> previousMatchingItems, Item newItem)
@@ -177,6 +177,7 @@ namespace Math3Game.View
         public void OnBoardUpdateComplete()
         {
             Scan();
+            //ReturnSwappingInput();
         }
     }
 }

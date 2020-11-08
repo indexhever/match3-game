@@ -109,7 +109,7 @@ namespace Math3Game.View
 
             // setup expected gem for each slot from column in descent order
             Gem currentGem;
-            for (int row = slotGrid.Rows - 1; row > 0; row--)
+            for (int row = slotGrid.Rows - 1; row >= 0; row--)
             {
                 currentSlot = slotGrid.GetItemByRowColumn(row, column);
                 currentGem = gemsInNonEmptySlots.Pop();

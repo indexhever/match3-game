@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Zenject;
 using GridFramework;
+using System;
 
 namespace Math3Game.View
 {
@@ -24,6 +25,21 @@ namespace Math3Game.View
         {
             slotGrid.GenerateItems();
             gemGrid.GenerateItems();
+
+            //PrintSlotsInfo();
         }
+
+        // TODO: clean it
+        //private void PrintSlotsInfo()
+        //{
+        //    for(int row = 0; row < slotGrid.Rows; row++)
+        //    {
+        //        for(int column = 0; column < slotGrid.Columns; column++)
+        //        {
+        //            Slot currentSlot = slotGrid.GetItemByRowColumn(row, column);
+        //            Debug.Log($"Slot {currentSlot.Row}x{currentSlot.Column}. Position: {currentSlot.Position}");
+        //        }
+        //    }
+        //}
     }
 }
