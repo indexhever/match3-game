@@ -19,10 +19,6 @@ namespace Math3Game.View
         public Vector2 Position { get => transform.position; set => transform.position = value; }
         public int Row { get; set; }
         public int Column { get; set; }
-
-        // TODO: remove from Item. Use it only on Gem Items
-        public Sprite Image => null;
-
         public bool IsEmpty { get => currentGem == null; }
         public Gem Gem { get => currentGem; }
 
@@ -62,26 +58,14 @@ namespace Math3Game.View
             currentGem = null;
         }
 
-        // TODO: remove from item, use it only on Gem Items
-        public bool Equals(Item other)
+        public void SetExpectedGem(Gem currentGem)
         {
-            return false;
-        }
-
-        // TODO: remove from item, use it only on Gem Items
-        public void Dispose()
-        {
-            
+            expectedGem = currentGem;
         }
 
         public class Factory : PlaceholderFactory<Vector2, Slot>
         {
 
-        }
-
-        public void SetExpectedGem(Gem currentGem)
-        {
-            expectedGem = currentGem;
         }
     }
 }

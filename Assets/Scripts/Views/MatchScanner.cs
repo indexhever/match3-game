@@ -15,9 +15,9 @@ namespace Math3Game.View
         private SwappingInputSwitch swappingInputSwitch;
         private BoardUpdater boardUpdater;
         private MatchSoundController matchSoundController;
-        private Stack<Item> rowItemMatcheds;
-        private List<Stack<Item>> columnItemMatcheds;
-        private List<Item> itemsToBeDisposed;
+        private Stack<Gem> rowItemMatcheds;
+        private List<Stack<Gem>> columnItemMatcheds;
+        private List<Gem> itemsToBeDisposed;
         private bool thereWasAMatch;
 
         [Inject]
@@ -31,17 +31,17 @@ namespace Math3Game.View
             this.swappingInputSwitch = swappingInputSwitch;
             this.boardUpdater = boardUpdater;
             this.matchSoundController = matchSoundController;
-            itemsToBeDisposed = new List<Item>();
+            itemsToBeDisposed = new List<Gem>();
         }
 
         private void Start()
         {
-            rowItemMatcheds = new Stack<Item>();
+            rowItemMatcheds = new Stack<Gem>();
             // initialize column stacks
-            columnItemMatcheds = new List<Stack<Item>>();
+            columnItemMatcheds = new List<Stack<Gem>>();
             for(int i = 0; i < grid.Columns; i++)
             {
-                columnItemMatcheds.Add(new Stack<Item>());
+                columnItemMatcheds.Add(new Stack<Gem>());
             }
             boardUpdater.SignOnUpdateComplete(OnBoardUpdateComplete);
         }
@@ -54,7 +54,7 @@ namespace Math3Game.View
         private IEnumerator ScanCoroutine()
         {
             StopSwappingInput();
-            Item currentItem;
+            Gem currentItem;
             thereWasAMatch = false;
             for (int row = 0; row < grid.Rows; row++)
             {
@@ -87,7 +87,7 @@ namespace Math3Game.View
                 ReturnSwappingInput();
         }
 
-        private void ScanItemStackWithItem(Stack<Item> previousMatchingItems, Item newItem)
+        private void ScanItemStackWithItem(Stack<Gem> previousMatchingItems, Gem newItem)
         {
             if (previousMatchingItems.Count == 0 || IsNewItemStillMatchingPreviousOnes(newItem, previousMatchingItems))
             {
@@ -99,12 +99,12 @@ namespace Math3Game.View
             previousMatchingItems.Push(newItem);            
         }
 
-        private static bool IsNewItemStillMatchingPreviousOnes(Item item, Stack<Item> previousMatchingItems)
+        private static bool IsNewItemStillMatchingPreviousOnes(Gem item, Stack<Gem> previousMatchingItems)
         {
             return previousMatchingItems.Peek().Equals(item);
         }
 
-        private void CleanStack(Stack<Item> itemMatchedStack)
+        private void CleanStack(Stack<Gem> itemMatchedStack)
         {
             if (IsThereAMatchInStack(itemMatchedStack))
             {
@@ -130,7 +130,7 @@ namespace Math3Game.View
         private IEnumerator DisposeItems()
         {            
             matchSoundController.PlayMatchSound();
-            foreach (Item itemToDispose in itemsToBeDisposed)
+            foreach (Gem itemToDispose in itemsToBeDisposed)
             {
                 itemToDispose.Dispose();
                 yield return null;
@@ -138,10 +138,10 @@ namespace Math3Game.View
             itemsToBeDisposed.Clear();
         }
 
-        private void SetDisposeItemsFromStack(Stack<Item> itemMatchedStack)
+        private void SetDisposeItemsFromStack(Stack<Gem> itemMatchedStack)
         {
             int amountOfItemsToDespawn = itemMatchedStack.Count;
-            Item currentItem;
+            Gem currentItem;
             for (int i = 0; i < amountOfItemsToDespawn; i++)
             {
                 currentItem = itemMatchedStack.Pop();
@@ -149,12 +149,12 @@ namespace Math3Game.View
             }
         }
 
-        private void AddItemToBeDisposed(Item currentItem)
+        private void AddItemToBeDisposed(Gem currentItem)
         {
             itemsToBeDisposed.Add(currentItem);
         }
 
-        private static bool IsThereAMatchInStack(Stack<Item> itemMatchedStack)
+        private static bool IsThereAMatchInStack(Stack<Gem> itemMatchedStack)
         {
             return itemMatchedStack.Count >= 3;
         }

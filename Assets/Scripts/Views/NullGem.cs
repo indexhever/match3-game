@@ -14,7 +14,7 @@ namespace Math3Game.View
 
         public Sprite Image => null;
 
-        public bool Equals(Item other)
+        public bool Equals(Gem other)
         {
             return false;
         }

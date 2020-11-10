@@ -45,7 +45,7 @@ namespace Tests
             
         }
 
-        public bool Equals(Item other)
+        public bool Equals(Gem other)
         {
             return (other as MockItem).GemType == gemType;
         }

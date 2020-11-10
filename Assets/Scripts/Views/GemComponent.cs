@@ -46,7 +46,7 @@ namespace Math3Game.View
             this.scorer = scorer;
         }
 
-        public virtual bool Equals(Item other)
+        public virtual bool Equals(Gem other)
         {
 
             return other.Image == Image;
