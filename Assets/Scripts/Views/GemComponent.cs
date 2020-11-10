@@ -83,6 +83,7 @@ namespace Math3Game.View
             scorer.IncreaseScore();
             currentSlot.CleanGem();
             OnArriveAtSlotRoutine = null;
+            Position = Vector2.zero;
         }
 
         public class Factory : PlaceholderFactory<Vector2, Sprite, Scorer, GemComponent>
