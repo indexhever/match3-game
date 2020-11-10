@@ -38,13 +38,10 @@ namespace Math3Game.Installer
                      .AsSingle()
                      .WithArguments<int, int, Vector2, float>(rows, columns, gridTransform.position, offsetBetweenItens);
 
-            //Container.BindFactory<Vector2, Sprite, GemComponent, GemComponent.Factory>()
-            //         .FromComponentInNewPrefab(itemPrefab);
             Container.BindFactory<Vector2, Sprite, Scorer, GemComponent, GemComponent.Factory>()
                      .FromMonoPoolableMemoryPool<Vector2, Sprite, Scorer, GemComponent>(
                         x => x.WithInitialSize(rows * columns)
                                 .FromComponentInNewPrefab(itemPrefab)
-                                .UnderTransformGroup("GemPool")
                       );
 
             Container.BindFactory<Vector2, Slot, Slot.Factory>()
