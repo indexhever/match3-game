@@ -8,8 +8,10 @@ using Zenject;
 
 namespace Math3Game.View
 {
-    public interface Gem : Item
+    public interface Gem : Item, IDisposable, IEquatable<Gem>
     {
+        Sprite Image { get; }
+
         void EnterSlot(Slot slot);
 
         void MoveToPosition(Vector2 newPosition, Action OnArrive = null);
