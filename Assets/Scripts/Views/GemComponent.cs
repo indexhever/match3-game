@@ -8,10 +8,11 @@ using Zenject;
 
 namespace Math3Game.View
 {
-    public class GemComponent : MonoBehaviour, Gem
+    public class GemComponent : MonoBehaviour, Gem, IPoolable<Vector2, Sprite, Scorer, IMemoryPool>
     {
         private Slot currentSlot;
         private Scorer scorer;
+        private IMemoryPool pool;
         private Action OnArriveAtSlotRoutine;
 
         [SerializeField]
@@ -38,12 +39,12 @@ namespace Math3Game.View
         public virtual int Column { get; set; }
         public virtual Sprite Image { get => spriteRenderer.sprite; }
 
-        [Inject]
-        public void Construct(Vector2 initialPosition, Sprite gemImage, Scorer scorer)
+        public void OnSpawned(Vector2 initialPosition, Sprite gemImage, Scorer scorer, IMemoryPool pool)
         {
             transform.position = initialPosition;
             spriteRenderer.sprite = gemImage;
             this.scorer = scorer;
+            this.pool = pool;
         }
 
         public virtual bool Equals(Gem other)
@@ -62,9 +63,7 @@ namespace Math3Game.View
             if (!gameObject.activeInHierarchy)
                 return;
 
-            scorer.IncreaseScore();
-            currentSlot.CleanGem();
-            gameObject.SetActive(false);
+            pool.Despawn(this);
         }
 
         public void MoveToPosition(Vector2 newPosition, Action OnArrive = null)
@@ -78,7 +77,15 @@ namespace Math3Game.View
             OnArriveAtSlotRoutine?.Invoke();
         }
 
-        public class Factory : PlaceholderFactory<Vector2, Sprite, GemComponent>
+        public void OnDespawned()
+        {
+            pool = null;
+            scorer.IncreaseScore();
+            currentSlot.CleanGem();
+            OnArriveAtSlotRoutine = null;
+        }
+
+        public class Factory : PlaceholderFactory<Vector2, Sprite, Scorer, GemComponent>
         {
 
         }

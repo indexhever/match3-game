@@ -10,19 +10,25 @@ namespace Math3Game.Controller
     {
         private GemComponent.Factory gemFactory;
         private Sprite[] gemImages;
+        private Scorer scorer;
 
-        public DefaultItemFactory(GemComponent.Factory gemFactory, Vector2 measuresInUnit, Sprite[] gemImages)
+        public DefaultItemFactory(
+            GemComponent.Factory gemFactory, 
+            Vector2 measuresInUnit, 
+            Sprite[] gemImages,
+            Scorer scorer)
         {
             this.gemFactory = gemFactory;
             MeasuresInUnit = measuresInUnit;
             this.gemImages = gemImages;
+            this.scorer = scorer;
         }
 
         public Vector2 MeasuresInUnit { get; private set; }
 
         public Gem Create(Vector2 newItemPosition)
         {
-            return gemFactory.Create(newItemPosition, GetRandomGemImage());
+            return gemFactory.Create(newItemPosition, GetRandomGemImage(), scorer);
         }
 
         public Gem CreateNull()
