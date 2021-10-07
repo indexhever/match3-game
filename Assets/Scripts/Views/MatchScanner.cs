@@ -3,6 +3,7 @@ using Math3Game.Controller;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Data;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using Zenject;
@@ -15,8 +16,8 @@ namespace Math3Game.View
         private SwappingInputSwitch swappingInputSwitch;
         private BoardUpdater boardUpdater;
         private MatchSoundController matchSoundController;
-        private Stack<Item> rowItemMatcheds;
-        private List<Stack<Item>> columnItemMatcheds;
+        private readonly Stack<Item> rowItemMatcheds = new Stack<Item>();
+        private readonly List<Stack<Item>> columnItemMatcheds = new List<Stack<Item>>();
         private List<Item> itemsToBeDisposed;
         private bool thereWasAMatch;
 
@@ -36,9 +37,6 @@ namespace Math3Game.View
 
         private void Start()
         {
-            rowItemMatcheds = new Stack<Item>();
-            // initialize column stacks
-            columnItemMatcheds = new List<Stack<Item>>();
             for(int i = 0; i < grid.Columns; i++)
             {
                 columnItemMatcheds.Add(new Stack<Item>());
@@ -53,24 +51,30 @@ namespace Math3Game.View
 
         private IEnumerator ScanCoroutine()
         {
+            yield return CleanAllStacks();
+            
             StopSwappingInput();
-            Item currentItem;
+            Item currentItem = null;
             thereWasAMatch = false;
             for (int row = 0; row < grid.Rows; row++)
             {
                 for (int column = 0; column < grid.Columns; column++)
                 {
                     currentItem = grid.GetItemByRowColumn(row, column);
-                    ScanItemStackWithItem(rowItemMatcheds, currentItem);
-                    ScanItemStackWithItem(columnItemMatcheds[column], currentItem);
-
-                    yield return null;
+                    if (currentItem is NullItem) {
+                        yield return null;
+                    } else {
+                        ScanItemStackWithItem(rowItemMatcheds, currentItem);
+                        ScanItemStackWithItem(columnItemMatcheds[column], currentItem);
+                        yield return null;
+                    }
                 }
                 yield return null;
             }
 
             yield return DisposeItems();
-            yield return CleanAllStacks();
+            //after get all disposable items, we need to update rows for affected gems exists on the top 
+            grid.UpdateRows(itemsToBeDisposed);
             OnScanningEnd();
         }
 
@@ -129,7 +133,7 @@ namespace Math3Game.View
                 itemToDispose.Dispose();
                 yield return null;
             }
-            itemsToBeDisposed.Clear();
+            //itemsToBeDisposed.Clear();
         }
 
         private void SetDisposeItemsFromStack(Stack<Item> itemMatchedStack)
@@ -169,9 +173,20 @@ namespace Math3Game.View
             boardUpdater.Run();
         }
 
-        public void OnBoardUpdateComplete()
+        private void OnBoardUpdateComplete()
         {
-            //Scan();
+            StopAllCoroutines();
+            DestroyOldItems();
+            grid.LogGrid();
+            Scan();
+        }
+
+        private void DestroyOldItems() {
+            foreach (Item itemToDispose in itemsToBeDisposed)
+            {
+                itemToDispose.Destroy();
+            }
+            itemsToBeDisposed.Clear();
         }
     }
 }

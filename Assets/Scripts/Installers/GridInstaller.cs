@@ -58,11 +58,12 @@ namespace Math3Game.Installer
 
         private Vector2 CalculateItemMeasures()
         {
-            BoxCollider2D itemCollider = itemPrefab.GetComponent<BoxCollider2D>();
+            var itemCollider = itemPrefab.GetComponent<BoxCollider2D>();
 
+            var size = itemCollider.size;
             return new Vector2(
-                itemCollider.size.x,
-                itemCollider.size.y
+                size.x,
+                size.y
             );
         }
     }

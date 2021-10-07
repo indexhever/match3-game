@@ -29,6 +29,8 @@ namespace Math3Game.View
             amountExtraItemsToCreatePerColumn = new int[grid.Columns];
         }
 
+        public float SpawnerTime => 3f;
+
         public void RequireGemPerColumn(int column)
         {
             amountExtraItemsToCreatePerColumn[column]++;
@@ -43,27 +45,39 @@ namespace Math3Game.View
         {
             for(int column = 0; column < amountExtraItemsToCreatePerColumn.Length; column++)
             {
-                while(amountExtraItemsToCreatePerColumn[column] > 0)
-                {
-                    SpawnItemAtColumn(column);
+                while(amountExtraItemsToCreatePerColumn[column] > 0) {
+                    int row = amountExtraItemsToCreatePerColumn[column];
+                    SpawnItemAtColumn(row-1,column);
                     amountExtraItemsToCreatePerColumn[column]--;                  
                 }
                 yield return null;
                 previousYForSpawning = 0;
             }
+
+            yield return new WaitWhile(()=> previousYForSpawning > 0);
+            
             boardUpdater.Stop();
+            
+            //time to finish the spawner session for each draw 
+            yield return new WaitForSeconds(SpawnerTime);
+            
+            boardUpdater.Complete();
         }
 
-        private void SpawnItemAtColumn(int column)
+        private void SpawnItemAtColumn(int row,int column)
         {
-            Vector2 newPosition = GetPositionForColumn(column);
+            Vector2 newPosition = GetPositionForColumn(row,column);
             Gem newGem = extraGemFactory.Create(newPosition);
+            newGem.Row = row;
+            newGem.Column = column;
             newGem.OnBoardUpdate();
+            
+            grid.UpdateGrid(newGem);
         }
 
-        private Vector2 GetPositionForColumn(int column)
+        private Vector2 GetPositionForColumn(int row, int column)
         {
-            Vector2 firstItemPositionOfGridColumn = grid.GetItemByRowColumn(0, column).Position;
+            Vector2 firstItemPositionOfGridColumn = grid.GetItemByRowColumn(row, column).Position;
             float newX = firstItemPositionOfGridColumn.x;
             float newY = extraGemFactory.MeasuresInUnit.y + firstItemPositionOfGridColumn.y + previousYForSpawning;
             previousYForSpawning += extraGemFactory.MeasuresInUnit.y;

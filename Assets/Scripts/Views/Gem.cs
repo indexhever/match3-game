@@ -3,6 +3,7 @@ using Math3Game.Controller;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using Zenject;
 
 namespace Math3Game.View
@@ -18,6 +19,8 @@ namespace Math3Game.View
         [SerializeField]
         private SpriteRenderer spriteRenderer;
 
+        [SerializeField]
+        private Text label;
         public Vector2 Position 
         { 
             get
@@ -30,11 +33,25 @@ namespace Math3Game.View
             }
         }
 
-        public int Row { get; set; }
+        private int row;
+        private int column;
+        public int Row {
+            get => row;
+            set {
+                row = value;
+                UpdateText();
+            }
+        }
 
-        public int Column { get; set; }
+        public int Column {
+            get => column;
+            set {
+                column = value;
+                UpdateText();
+            }
+        }
         public Sprite Image { get => spriteRenderer.sprite; }
-
+        
         [Inject]
         public void Construct(Vector2 initialPosition, Sprite gemImage, BoardUpdater boardUpdater, Scorer scorer)
         {
@@ -46,10 +63,11 @@ namespace Math3Game.View
             boardUpdater.SignOnUpdateComplete(OnBoardComplete);
         }
 
-        public bool Equals(Item other)
-        {
-
-            return other.Image == Image;
+        public bool Equals(Item other) {
+            if (!gameObject.activeInHierarchy) {
+                return false;
+            }
+            return other?.Image == Image;
         }
 
         public void OnBoardUpdate()
@@ -79,6 +97,14 @@ namespace Math3Game.View
             boardUpdater.UnSignOnUpdateComplete(OnBoardComplete);
         }
 
+        public void Destroy() {
+            GameObject.Destroy(gameObject);
+        }
+
+        private void UpdateText() {
+            label.text = "[" +Row +  "," + Column+  "]";
+        }
+        
         public class Factory : PlaceholderFactory<Vector2, Sprite, Gem>
         {
 

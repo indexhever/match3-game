@@ -11,5 +11,6 @@ namespace GridFramework
         int Row { get; set; }
         int Column { get; set; }
         Sprite Image { get; }
+        void Destroy();
     }
 }
