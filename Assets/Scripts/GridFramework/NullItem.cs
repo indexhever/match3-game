@@ -11,6 +11,9 @@ namespace GridFramework
         public int Column { get => -1; set => _ = value; }
 
         public Sprite Image => null;
+        public void Destroy() {
+            
+        }
 
         public bool Equals(Item other)
         {

@@ -7,6 +7,7 @@ namespace Math3Game.View
 {
     public interface ExtraItemSpawner
     {
+        float SpawnerTime { get; }
         void RequireGemPerColumn(int column);
         void StartSpawning();
     }

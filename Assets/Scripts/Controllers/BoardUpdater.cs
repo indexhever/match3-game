@@ -33,9 +33,14 @@ namespace Math3Game.Controller
         public void Stop()
         {
             OnUpdatingBoard?.Invoke();
-            //OnUpdateComplete?.Invoke();
+            
         }
 
+        public void Complete() 
+        {
+            OnUpdateComplete?.Invoke();
+        }
+        
         public void RequireGemForColumn(int column)
         {
             extraItemSpawner.RequireGemPerColumn(column);            

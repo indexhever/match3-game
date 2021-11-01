@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 namespace GridFramework
@@ -13,8 +11,8 @@ namespace GridFramework
         private Vector2 origin;
         private Item[] items;
         private float offsetBetweenItens;
-        private Vector2 itemMeasuresInUnit;        
-
+        private Vector2 itemMeasuresInUnit;
+        
         public GameGrid(int rows, int columns, ItemFactory itemFactory, Vector2 origin, float offsetBetweenItens)
         {
             Rows = rows;
@@ -44,6 +42,8 @@ namespace GridFramework
                     items[GetPositionFromRowColumn(row, column)] = newItem;
                 }                
             }
+
+            LogGrid();
         }
 
         public Item GetItemByRowColumn(int row, int column)
@@ -58,8 +58,9 @@ namespace GridFramework
             int firstItemRow = firstItem.Row;
             int firstItemColumn = firstItem.Column;
 
+            var itemToSwap = items[GetPositionFromRowColumn(secondItem.Row, secondItem.Column)];
             items[GetPositionFromRowColumn(secondItem.Row, secondItem.Column)] = firstItem;
-            items[GetPositionFromRowColumn(firstItemRow, firstItemColumn)] = secondItem;
+            items[GetPositionFromRowColumn(firstItemRow, firstItemColumn)] = itemToSwap;
 
             firstItem.Row = secondItem.Row;
             firstItem.Column = secondItem.Column;
@@ -103,6 +104,64 @@ namespace GridFramework
         private int GetPositionFromRowColumn(int row, int column)
         {
             return row * Columns + column;
+        }
+
+        //after each match draw, we need to update items position of the grid
+        public void UpdateGrid(Item extraNewItem) {
+            int pos = GetPositionFromRowColumn(extraNewItem.Row, extraNewItem.Column);
+            items[pos] = null;
+            items[pos] = extraNewItem;
+        }
+
+        public void UpdateRows(List<Item> itemsToBeDisposed) {
+            for (int i = 0; i < itemsToBeDisposed.Count; i++) {
+                var itemToDispose = itemsToBeDisposed[i];
+                if (itemToDispose.Row > 0) {
+                    for (int j = 0; j < items.Length; j++) {
+                        var currentItem = items[j];
+                        if (currentItem.Column == itemToDispose.Column && currentItem.Row < itemToDispose.Row) {
+                            currentItem.Row++;
+                        }
+                    }
+                }
+            }
+        }
+
+        public void LogGrid() {
+            string grid="";
+            for (int i = 0; i < Rows; i++) {
+                for (int j = 0; j < Columns; j++) {
+                    string id = TranslateGem(items[GetPositionFromRowColumn(i, j)].Image.name);
+                    grid += id +  ",";
+                }
+
+                grid += '\n';
+            }
+            
+            Debug.Log(grid);
+        }
+
+        public static string TranslateGem(string name) {
+            string result = name.Substring(name.Length - 1, 1);
+            string id = "";
+            switch (result) {
+                case "1": id = "MILK_";
+                    break;
+                case "2": id = "APPLE";
+                    break;
+                case "3": id = "ORANG";
+                    break;
+                case "4": id = "BREAD";
+                    break;
+                case "5": id = "VEGIE";
+                    break;
+                case "6": id = "COCO_";
+                    break;
+                case "7": id = "STAR_";
+                    break;
+            }
+
+            return id;
         }
     }
 }
